@@ -1,0 +1,207 @@
+﻿@model ElYamanyDashboard.Models.Order
+
+@{
+    ViewBag.Title = "EditWithAddItem";
+}
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+<script src="~/Scripts/Order.js"></script>
+
+<h2 style="text-align:center;color:white;border-radius:25px;background:#007bff">اضافة  منتجات للاوردر</h2>
+
+@using (Html.BeginForm())
+{
+    <h3 style="text-align:center;color:red;"> @ViewBag.Message</h3>
+    if (Model.OrderStatusId==4)
+    {
+        <a href="/Orders/UpdateOrderStatus?OrderStatusId=1&OrderId=@Model.Id" class="btn btn-primary">تحويل الطلب لقيد الانتظار</a>
+
+    }
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.OrderStatusId)
+        @*@Html.HiddenFor(model => model.UserId)*@
+        <input type="text" name="UserId" value="@Model.UserId" hidden />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserId, "العضو", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" value="@ViewBag.UserDate.FullName" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserId, "كود العضو", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" value="@ViewBag.UserDate.UserCode" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DeliveryTypeId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DeliveryTypeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SubTotal, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.SubTotal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryCost, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DeliveryCost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.DeliveryCost, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalPrice, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.TotalPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalPoints, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalPoints, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.TotalPoints, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CreationDateEgypt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DeliveryDateEgypt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.Label("المنتج", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ProductId", null, htmlAttributes: new { @class = "form-control autocompleteProducts", @required = "required" })
+                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("الكمية", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProductCount, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+            </div>
+        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.OrderStatusId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("OrderStatusId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.OrderStatusId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="حفظ" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-12 table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>كود المنتج</th>
+                    <th>الاسم</th>
+                    <th>العدد</th>
+                    <th>سعر الوحدة</th>
+                    <th>الاجمالي</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.OrderItems.Count; i++)
+                {
+                    <tr>
+                        <td style="display:none;"><input type="number" id="OrderItemInputs" name="OrderItems[@i].Id" value="@Model.OrderItems[i].Id" /></td>
+                        <td><input type="number" id="OrderItemInputs" name="OrderItems[@i].ProductId" value="@Model.OrderItems[i].ProductId" readonly /><input type="number" id="OrderItemInputs" name="OrderItems[@i].Id" value="@Model.OrderItems[i].Id" hidden />  </td>
+                        <td><input type="text" id="OrderItemInputs" value="@Model.OrderItems[i].Product.NameAR" /></td>
+                        <td><input type="number" id="OrderItemInputs" name="OrderItems[@i].ProductCount" value="@Model.OrderItems[i].ProductCount" readonly /></td>
+                        <td><input type="number" id="OrderItemInputs" name="OrderItems[@i].ProductPrice" value="@Model.OrderItems[i].ProductPrice" readonly /></td>
+                        <td><input type="number" id="OrderItemInputs" name="OrderItems[@i].TotalPrice" value="@Model.OrderItems[i].TotalPrice" readonly /></td>
+                        <td>
+                            <a href="#" onclick="return getbyID(@Model.OrderItems[i].Id)">تعديل</a>|
+                            <a href="/Orders/DeleteOrderItem/@Model.OrderItems[i].Id" >حذف</a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*<button type="button" class="close" data-dissmiss="modal"><span aria-hidden="true">&times;</span></button>*@
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Add Employee</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="Id">كود المنتج</label>
+                                <input type="text" class="form-control" id="Id" placeholder="كود المنتج" disabled="disabled" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Name">الاسم</label>
+                                <input type="text" class="form-control" id="Name" placeholder="الاسم" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label for="ProductCount">العدد</label>
+                                <input type="number" class="form-control" id="PCount" placeholder="العدد" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Price">سعر الوحدة</label>
+                                <input type="text" class="form-control" id="Price" placeholder="سعر الوحدة" readonly />
+                            </div>
+                            <div class="form-group hidden">
+                                <label for="OrderId"> </label>
+                                <input type="text" class="form-control" id="OrderId" placeholder="" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">تعديل</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.col -->
+</div>
+

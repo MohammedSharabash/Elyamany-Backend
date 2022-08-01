@@ -1,0 +1,214 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>tree</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Almarai|Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/treev3/css/style.css">
+
+</head>
+@using (Html.BeginForm())
+{
+    <body class="backbody" style="background-image: url(~/treev3/img/about-style3-bg.jpg)">
+
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+            <div class="col-xs-12" style="direction: rtl;">
+                <div class="col-xs-4 level">
+                    <form action="#" method="post">
+                        <table id="level">
+
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level1" name="level" value="level1" checked>
+                                    <label for="level1">6%</label>
+                                </td>
+
+                                <td>
+                                    <input type="radio" id="level2" name="level" value="level2">
+                                    <label for="level2">9%</label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level3" name="level" value="level3">
+                                    <label for="level3">12%</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level5" name="level" value="level5">
+                                    <label for="level5">15%</label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level6" name="level" value="level6">
+                                    <label for="level6">18%</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level9" name="level" value="level9">
+                                    <label for="level9">21%</label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level8" name="level" value="level8">
+                                    <label for="level8">جدد</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level7" name="level" value="level7">
+                                    <label for="level7">مباشر</label>
+                                </td>
+
+
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level10" name="level" value="level10">
+                                    <label for="level10">نشطاء</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level11" name="level" value="level11">
+                                    <label for="level11">بدون نقط</label>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <input type="radio" id="level12" name="level" value="level12">
+                                    <label for="level12">كل المستويات</label>
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+
+        <span class="filtericon" onclick="openNav()"><img src="~/treev3/img/filter.png" class="imgfilteer"> Filter</span>
+
+
+
+        <div class="body genealogy-body genealogy-scroll">
+            <div class="genealogy-tree" id="panzoom">
+                <ul>
+                    <li>
+                        <a href="javascript:void(0);">
+                            <div class="member-view-box">
+                                <div class="member-image">
+                                    <div class="imgg">
+                                        <img src="~/treev3/img/v2-2.jpg" alt="Member">
+                                    </div>
+                                    <span class="labeel backcircleredheart">
+                                        <i class="fas fa-heart  redheart"></i>
+                                    </span>
+                                    <span class="percentage">@ViewBag.Data.UserLevel</span>
+                                    <span class="filter">0</span>
+                                    <div class="member-details">
+                                        <p class="name">@ViewBag.Data.fname </p>
+                                        <p class="code">الكود @ViewBag.Data.lname</p>
+                                        <p class="points"> النقط الشخصية @ViewBag.Data.title</p>
+                                        <p class="team">نقط المجموعة :@ViewBag.Data.title </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <ul class="active">
+                            @foreach (var child in ViewBag.Data.children)
+                            {
+                               
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="member-view-box">
+                                                <div class="member-image">
+                                                    <div class="imgg">
+                                                        <img src="~/treev3/img/v2-2.jpg" alt="Member">
+                                                    </div>
+                                                    <span class="labeel backcircleredheart">
+                                                        <i class="fas fa-heart  redheart"></i>
+                                                    </span>
+                                                    <span class="percentage">@child.UserLevel</span>
+                                                    <div class="member-details">
+                                                        <p class="name">@child.fname </p>
+                                                        <p class="code">الكود @child.lname</p>
+                                                        <p class="points"> النقط الشخصية @child.title</p>
+                                                        <p class="team">نقط المجموعة :@child.title </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+
+                            }
+                        </ul>
+                    </li>
+               </ul>
+            </div>
+        </div>
+
+
+        <script src='~/treev3/js/jquery-3.4.1.min.js'>
+        </script>
+        <script src="~/treev3/js/script.js"></script>
+        <script src="~/treev3/js/fonts.js"></script>
+        <script src="~/treev3/panzoom.min.js"></script>
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "250px";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+            }
+            const element = document.getElementById('panzoom')
+            const panzoom = Panzoom(element, {
+                // options here
+                // Whether or not to transition the scale
+                animate: true,
+
+                // This option treats the Panzoom element's parent as a canvas.
+                // Effectively, Panzoom binds the down handler to the parent instead of the Panzoom element, so that pointer events anywhere on the "canvas" moves its children.
+                canvas: true,
+
+                // Default cursor style for the element
+                cursor: 'move',
+                // X Value used to set the beginning transform
+
+                startX: '50px',
+
+
+                // Y Value used to set the beginning transform
+
+                startY: 0,
+
+
+
+            });
+
+            // enable mouse wheel
+            const parent = element.parentElement
+            parent.addEventListener('wheel', panzoom.zoomWithWheel);
+        </script>
+    </body>
+}
+</html>

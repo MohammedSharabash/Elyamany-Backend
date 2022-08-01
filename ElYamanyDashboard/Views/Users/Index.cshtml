@@ -1,0 +1,220 @@
+﻿@model IEnumerable<ElYamanyDashboard.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@*<head>
+        <link href="~/DataTablesStyles/DataTablesbootstrap.min.css" rel="stylesheet" />
+        <link href="~/DataTablesStyles/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+    </head>*@
+<h2 style="text-align:center;color:white;border-radius:25px;background:#007bff">الأعضاء</h2>
+<div class="card">
+    <div class="card-header center-block">
+        <a href="/Users/create" class="btn btn-primary" id="crt">
+            <i class="fa fa-plus" aria-hidden="true"></i> جديد
+        </a>
+    </div>
+
+    <div>
+        <a href="/Users/Index?NewMembers=1" class="btn btn-primary">
+            <i class="fa fa-info" aria-hidden="true"></i>عضويات جديدة
+        </a>
+        <a href="/Users/Index?NotActive=1" class="btn btn-primary">
+            <i class="fa fa-info" aria-hidden="true"></i>عضويات تم تعطيلها
+        </a>
+        <a href="/Users/Index" class="btn btn-primary">
+            <i class="fa fa-info" aria-hidden="true"></i>الكل
+        </a>
+
+    </div>
+    <label>اجمالي العدد :- @ViewBag.Total</label>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="exampleCustome" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                        @Html.DisplayName("عرض الشجرة")
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AreaId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GenderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdentityFrontImage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdentityBackImage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdentityNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SponsorId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsMaster)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfBirth)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Enabled)
+                    </th>
+                    <th>
+                        واتساب
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            المزيد
+                        </td>
+                        <td>
+                            <a href="http://projectegy-002-site35.gtempurl.com/?userId=@item.Id" target="_blank">الشجرة</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Area.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            <a href="~/Users/Edit/@item.Id">
+                                <img src="http://projectegy-001-site41.gtempurl.com/@item.IdentityFrontImage" style="width:100%;height:200px" />
+                            </a>
+                        </td>
+                        <td>
+                            <a href="~/Users/Edit/@item.Id">
+                                <img src="http://projectegy-001-site41.gtempurl.com/@item.IdentityBackImage" style="width:100%;height:200px" />
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdentityNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SponsorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsMaster)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateOfBirthString)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDateEgypt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Enabled)
+                        </td>
+                        <td>
+                            <a href="https://api.whatsapp.com/send?phone=@item.PhonekeyWithPhoneNumber" class="btn btn-danger" target="_blank">واتساب</a>
+                        </td>
+                        <td>
+                            @Html.ActionLink("تعديل", "Edit", new { id = item.Id }) @*|
+                                @Html.ActionLink("حذف", "Delete", new { id = item.Id, message = (string)null })*@
+                    </tr>
+
+
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+<script src="~/plugins/jquery/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#exampleCustome').DataTable({
+            "paging": true,
+            "pageLength": 15,
+            "scrollX": true,
+            "lengthChange": false,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "ordering": false,
+            "stateSave": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'print'
+            ],
+            "language": {
+                "sProcessing": "جارٍ التحميل...",
+                "sLengthMenu": "أظهر _MENU_ مدخلات",
+                "sZeroRecords": "لم يعثر على أية سجلات",
+                "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_",
+                "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 ",
+                "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
+                "sInfoPostFix": "",
+                "sSearch": "",
+                "searchPlaceholder": "ادخل كلمة البحث",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "الأول",
+                    "sPrevious": "السابق",
+                    "sNext": "التالي",
+                    "sLast": "الأخير"
+                },
+            },
+
+
+        });
+
+
+    });
+    function PageNumber() {
+        var table = $('#exampleCustome').DataTable();
+        var info = table.page.info();
+        alert(JSON.stringify(info.page + 1));
+    };
+
+</script>

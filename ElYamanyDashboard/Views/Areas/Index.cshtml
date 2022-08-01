@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ElYamanyDashboard.Models.Area>
+
+@{
+                /**/
+
+                ViewBag.Title = "Index";
+}
+
+<h2 style="text-align:center;color:white;border-radius:25px;background:#007bff">المناطق</h2>
+
+
+<div class="card">
+    <div class="card-header center-block">
+        <a href="/Areas/create" class="btn btn-primary" id="crt">
+            <i class="fa fa-plus" aria-hidden="true"></i> جديد
+        </a>
+    </div>
+
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NameAR)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameAR)
+                        </td>
+                        <td>
+                            @Html.ActionLink("تعديل", "Edit", new { id = item.Id }) @*|
+                                @Html.ActionLink("حذف", "Delete", new { id = item.Id, message = (string)null })*@
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>

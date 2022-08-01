@@ -1,0 +1,74 @@
+﻿@model IEnumerable<ElYamanyDashboard.Models.Cheque>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+ <h2 style="text-align:center;color:white;border-radius:25px;background:#007bff">الشيكات</h2>
+
+ <div class="card">
+
+     <div class="card-header center-block">
+         <a href="/Cheques/create" class="btn btn-primary" id="crt">
+             <i class="fa fa-plus" aria-hidden="true"></i> جديد
+         </a>
+     </div>
+     <!-- /.card-header -->
+     <div class="card-body">
+         <table id="example" class="table table-striped table-bordered" style="width:100%">
+             <thead>
+                 <tr>
+                     <th>
+                         @Html.DisplayNameFor(model => model.Number)
+                     </th>
+                     <th>
+                         @Html.DisplayNameFor(model => model.Amount)
+                     </th>
+                     <th>
+                         @Html.DisplayNameFor(model => model.Note)
+                     </th>
+                     <th>
+                         @Html.DisplayNameFor(model => model.Name)
+                     </th>
+                     <th>
+                         @Html.DisplayNameFor(model => model.Symbol)
+                     </th>
+                     <th></th>
+                 </tr>
+             </thead>
+             <tbody>
+
+                 @foreach (var item in Model)
+                 {
+                 <tr>
+                     <td>
+                         @Html.DisplayFor(modelItem => item.Number)
+                     </td>
+                     <td>
+                         @Html.DisplayFor(modelItem => item.Amount)
+                     </td>
+                     <td>
+                         @Html.DisplayFor(modelItem => item.Note)
+                     </td>
+                     <td>
+                         @Html.DisplayFor(modelItem => item.Name)
+                     </td>
+                     <td>
+                         <img src="~/Images/SymbolImages/@item.Symbol" style="width:25%;height:90px" />
+                     </td>
+                     <td>
+                         @Html.ActionLink("التعديل", "Edit", new { id = item.Id })
+                     </td>
+                 </tr>
+
+
+
+                 }
+
+             </tbody>
+
+         </table>
+     </div>
+     <!-- /.card-body -->
+ </div>

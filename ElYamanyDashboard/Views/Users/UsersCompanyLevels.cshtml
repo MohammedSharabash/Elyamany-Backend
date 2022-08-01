@@ -1,0 +1,137 @@
+﻿@model IEnumerable<ElYamanyDashboard.Models.Views.UserReport>
+@using ElYamanyDashboard.Models
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 style="text-align:center;color:white;border-radius:25px;background:#007bff">مستويات مباشر للشركة</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table id="exampleCustome" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserLevel)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GroupPoints)
+                        </th>
+                        <th>
+                            @Html.DisplayName(" عدد اشخاص كل مستوى")
+                        </th>
+                        <th>
+                            @Html.DisplayName("مجموع نقاط كل مستوى")
+                        </th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var lenght = Model.Count();
+                        int i = 0;
+                        var levels = new List<LevelsSetting>();
+                        foreach (var item in ViewBag.Levels)
+                        {
+                            var level = (LevelsSetting)item;
+                            levels.Add(level);
+                        }
+                    }
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserLevel)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GroupPoints)
+                            </td>
+                            @if (i < ViewBag.LevelsCount)
+                            {
+                                <td>
+                                    @levels[i].LevelName ( @levels[i].Count)
+                                </td>
+                                <td>
+                                    @levels[i].LevelName ( @levels[i].SumOfPoints)
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+
+                            }
+
+
+                        </tr>
+                        i++;
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+
+}
+
+<script src="~/plugins/jquery/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#exampleCustome').DataTable({
+            "paging": true,
+            "pageLength": 15,
+            "scrollX": true,
+            "lengthChange": false,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'print'
+            ],
+            "language": {
+                "sProcessing": "جارٍ التحميل...",
+                "sLengthMenu": "أظهر _MENU_ مدخلات",
+                "sZeroRecords": "لم يعثر على أية سجلات",
+                "sInfo": "إظهار _START_ إلى _END_ من أصل _TOTAL_",
+                "sInfoEmpty": "يعرض 0 إلى 0 من أصل 0 ",
+                "sInfoFiltered": "(منتقاة من مجموع _MAX_ مُدخل)",
+                "sInfoPostFix": "",
+                "sSearch": "",
+                "searchPlaceholder": "ادخل كلمة البحث",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "الأول",
+                    "sPrevious": "السابق",
+                    "sNext": "التالي",
+                    "sLast": "الأخير"
+                },
+            },
+
+
+        });
+
+
+    });
+</script>

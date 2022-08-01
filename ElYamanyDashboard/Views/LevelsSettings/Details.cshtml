@@ -1,0 +1,50 @@
+﻿@model ElYamanyDashboard.Models.LevelsSetting
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LevelsSetting</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelFrom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelFrom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelTo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelTo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelNumebr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelNumebr)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

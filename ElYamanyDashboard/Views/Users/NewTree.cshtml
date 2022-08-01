@@ -1,0 +1,73 @@
+﻿@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.3/css/jquery.orgchart.min.css"> -->
+    <link rel="stylesheet" href="~/treeNodes/css/icomoon.css">
+    <link rel="stylesheet" href="~/treeNodes/css/style.css">
+</head>
+
+<body>
+
+    <div id="tree"></div>
+
+    <div class="body-blackout"></div>
+
+    <div class="popup-modal shadow" id="popup-modal">
+        <header>
+            <span class="popup-modal__close"><i class="icon-clear"></i></span>
+            <h4 class="title">Filter</h4>
+        </header>
+
+        <div class="modal-content">
+            <label class="check" data-value='21'>
+                <input type="checkbox" name='filter'>
+                <span>21 %</span>
+            </label>
+
+            <label class="check" data-value='18'>
+                <input type="checkbox" name='filter'>
+                <span>18 %</span>
+            </label>
+
+            <label class="check" data-value='15'>
+                <input type="checkbox" name='filter'>
+                <span>15 %</span>
+            </label>
+
+            <label class="check" data-value='12'>
+                <input type="checkbox" name='filter'>
+                <span>12 %</span>
+            </label>
+            <label class="check" data-value='9'>
+                <input type="checkbox" name='filter'>
+                <span>9 %</span>
+            </label>
+            <label class="check" data-value='6'>
+                <input type="checkbox" name='filter'>
+                <span>6 %</span>
+            </label>
+            <label class="check" data-value='fill'>
+                <input type="checkbox" name='' id='love'>
+                <span>المفضلين</span>
+            </label>
+        </div>
+
+        <button id="filter-btn"> اظهر الشبكة</button>
+    </div>
+
+    <button class="popup-trigger"><span class="icon-tune"></span></button>
+
+    <script src='~/treeNodes/js/orgchart.js'></script>
+    <script src="~/treeNodes/js/main.js"></script>
+</body>
+
+</html>

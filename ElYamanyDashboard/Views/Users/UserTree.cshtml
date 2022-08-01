@@ -1,0 +1,368 @@
+﻿@{ 
+    Layout = null;}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>tree</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Almarai|Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/treestyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body class="backbody" style="background-image: url(../Content/img/about-style3-bg.jpg) ">
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+        <div class="col-xs-12" style="direction: rtl;">
+            <div class="col-xs-4 level">
+                <form asp-action="UserTree" method="post" style="text-align:center">
+                    <input hidden name="UserId" value="@ViewBag.UserId" />
+                    <table id="level">
+                        @foreach (var level in ViewBag.levels)
+                        {
+                            <tr>
+                                <td style="cursor:pointer">
+                                    <input type="radio" id="@level.Id" name="LevelsSettingId" value="@level.Id">
+                                    <label for="@level.LevelName">@level.LevelName</label>
+                                </td>
+
+
+                            </tr>
+
+
+
+                        }
+
+                        @*<tr>
+                                <td>
+                                    <input type="radio" id="level1" name="level" value="level1" checked>
+                                    <label for="level1">6%</label>
+                                </td>
+
+                                <td>
+                                    <input type="radio" id="level2" name="level" value="level2">
+                                    <label for="level2">9%</label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level3" name="level" value="level3">
+                                    <label for="level3">12%</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level5" name="level" value="level5">
+                                    <label for="level5">15%</label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level6" name="level" value="level6">
+                                    <label for="level6">18%</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level9" name="level" value="level9">
+                                    <label for="level9">21%</label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level8" name="level" value="level8">
+                                    <label for="level8">جدد</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level7" name="level" value="level7">
+                                    <label for="level7">مباشر</label>
+                                </td>
+
+
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="radio" id="level10" name="level" value="level10">
+                                    <label for="level10">نشطاء</label>
+                                </td>
+                                <td>
+                                    <input type="radio" id="level11" name="level" value="level11">
+                                    <label for="level11">بدون نقط</label>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <input type="submit" id="level12" name="LevelsSettingId" value="4">
+                                    <label for="level12">كل المستويات</label>
+                                </td>
+
+                            </tr>*@
+
+                    </table>
+                    <button style="background: none; border: none; color: white; height: 2rem; cursor: pointer;" type="submit"> بحث</button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+    <span class="filtericon" onclick="openNav()"><img src="~/Content/img/filter.png" class="imgfilteer"> Filter</span>
+
+
+
+    <div class="body genealogy-body genealogy-scroll">
+        <div class="genealogy-tree" id="panzoom">
+            <ul>
+                <li>
+
+                    <a href="javascript:void(0);">
+                        <div class="member-view-box">
+                            <div class="member-image">
+                                <div class="imgg">
+                                    @if (string.IsNullOrEmpty(ViewBag.dd.photo))
+                                    {
+                                        <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                    }
+                                    else
+                                    {
+                                        <img src="@ViewBag.dd.photo" alt="Member">
+
+                                    }
+                                </div>
+                               
+                                <span class="percentage">@ViewBag.dd.UserLevel</span>
+                                <span class="filter">+@ViewBag.dd.children.Count</span>
+                                <div class="member-details">
+                                    <p class="name">@ViewBag.dd.fname </p>
+                                    <p class="code">@ViewBag.dd.lname</p>
+                                    @*<p class="points">@ViewBag.dd.ChildrenSum </p>*@
+                                    <p class="team">@ViewBag.dd.title </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="active">
+                        <li>
+
+                            @foreach (var item in ViewBag.dd.children)
+                            {
+
+
+                                if (item.children.Count > 0)
+                                {
+
+
+                                       <a href="javascript:void(0);">
+                                           <div class="member-view-box">
+                                               <div class="member-image">
+                                                   <div class="imgg">
+                                                       @if (string.IsNullOrEmpty(item.photo))
+                                                       {
+                                                           <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                       }
+                                                       else
+                                                       {
+                                                           <img src="@item.photo" alt="Member">
+
+                                                       }
+                                                   </div>
+                                                   @if (item.IsFavorite)
+                                                   {
+                                                       <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@item.Id',@item.Id)">
+
+                                                           <i class="fas fa-heart  redheart @item.Id" id="@item.Id"></i>
+                                                       </span>
+                                                   }
+                                                   else
+                                                   { <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@item.Id',@item.Id)">
+
+
+                                                           <i style="font-size: 16px; line-height: 22px !important; text-align: center; background: #ffffff; color: grey;" class="fas fa-heart @item.Id" id="@item.Id"></i>
+
+                                                       </span>
+
+                                                   }
+                                                   <span class="percentage">@item.UserLevel</span>
+                                                   <span class="filter">+ @item.children.Count </span>
+                                                   <div class="member-details">
+                                                       <p class="name">@item.fname </p>
+                                                       <p class="code">@item.lname</p>
+                                                       @*<p class="points">@item.ChildrenSum </p>*@
+                                                       <p class="team">@item.title </p>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </a>
+
+
+
+
+
+                                       <ul>
+                                           @foreach (var child in item.children)
+                                           {
+                                               <li>
+                                                   <a href="javascript:void(0);">
+                                                       <div class="member-view-box">
+                                                           <div class="member-image">
+                                                               <div class="imgg">
+                                                                   @if (string.IsNullOrEmpty(child.photo))
+                                                                   {
+                                                                       <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                       <img src="@child.photo" alt="Member">
+
+                                                                   }
+                                                               </div>
+                                                               @if (child.IsFavorite)
+                                                               {
+                                                                   <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@child.Id',@child.Id)">
+
+                                                                       <i class="fas fa-heart  redheart @child.Id" id="@child.Id"></i>
+                                                                   </span>
+                                                               }
+                                                               else
+                                                               { <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@child.Id',@child.Id)">
+
+
+                                                                       <i style="font-size: 16px; line-height: 22px !important; text-align: center; background: #ffffff; color: grey;" class="fas fa-heart @child.Id" id="@child.Id"></i>
+
+                                                                   </span>
+
+                                                               }
+                                                               <span class="percentage">@child.UserLevel</span>
+                                                               <div class="member-details">
+                                                                   <p class="name">@child.fname </p>
+                                                                   <p class="code">@child.lname</p>
+                                                                   @*<p class="points">@child.ChildrenSum </p>*@
+                                                                   <p class="team">@child.title </p>
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                   </a>
+                                                   
+                                               </li>
+                                           }
+
+                                       </ul>}
+               
+                                       }
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script src='~/Content/js/jquery-3.4.1.min.js'></script>
+    <script src="~/Content/js/script.js"></script>
+    <script src="~/Content/js/fonts.js"></script>
+    <script src="~/Content/js/panz.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+        const element = document.getElementById('panzoom')
+        const panzoom = Panzoom(element, {
+            // options here
+            // Whether or not to transition the scale
+            animate: true,
+
+            // This option treats the Panzoom element's parent as a canvas.
+            // Effectively, Panzoom binds the down handler to the parent instead of the Panzoom element, so that pointer events anywhere on the "canvas" moves its children.
+            canvas: true,
+
+            // Default cursor style for the element
+            cursor: 'move',
+            // X Value used to set the beginning transform
+
+            startX: '50px',
+
+
+            // Y Value used to set the beginning transform
+
+            startY: 0,
+
+
+
+        });
+
+        // enable mouse wheel
+        const parent = element.parentElement
+        parent.addEventListener('wheel', panzoom.zoomWithWheel);
+        function AddFavorite(url, id) {
+            console.log(id);
+                    $.ajax({
+                       
+                        url: url,
+                        success: function (data) {
+                            if (data == "True") {
+                                //toastr.success("تم الاضافة الى المفضلة بنجاح");
+                                $("#"+id).css("color", "red");
+                                //  setInterval('location.reload()', 2500);
+                            //    location.reload();
+                            }
+                            else {
+                            //    toastr.error(data.message);
+                                $("#"+id).css("color", "grey");
+
+                            }
+                        }
+                    })
+                }
+            
+        
+        function RemoveFavorite(url,id) {
+            swal({
+                title: "هل متأكد؟",
+                text: "هل تريد حذف هذا السمستخدم من  المفضلة",
+                icon: "warning"
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                      
+                        url: url,
+                        success: function (data) {
+                            if (data) {
+                                //toastr.success("تم الازالة من المفضلة بنجاح");
+                                $('#'+id).css("color", "grey");
+                                //    setInterval('location.reload()', 2500);
+                                location.reload();
+                            }
+                            else {
+                                toastr.error(data.message);
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

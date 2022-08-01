@@ -1,0 +1,369 @@
+/*----------------genealogy-scroll----------*/
+
+.genealogy-scroll::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+}
+.genealogy-scroll::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #e4e4e4;
+}
+.genealogy-scroll::-webkit-scrollbar-thumb {
+    background: #212121;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+.genealogy-scroll::-webkit-scrollbar-thumb:hover {
+    background: #d5b14c;
+    transition: 0.5s;
+}
+
+
+/*----------------genealogy-tree----------*/
+.genealogy-body{
+    white-space: nowrap;
+    overflow-y: hidden;
+    /* padding: 6px; */
+    min-height: 500px;
+    padding-top: 0px;
+    text-align: center;
+}
+.genealogy-tree{
+  display: inline-block;
+  margin: 0 auto;
+  /* display: block; */
+}
+.genealogy-tree ul {
+    padding-top: 20px;
+    position: relative;
+    padding-right: 1px;
+    display: flex;
+    justify-content: center;
+    direction: rtl;
+    text-align: center;
+}
+.genealogy-tree li {
+    float: right;
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+}
+.genealogy-tree li::before, .genealogy-tree li::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-top: 2px solid #fbba00;
+    width: 50%;
+    height: 18px;
+}
+.genealogy-tree li::after{
+    left: auto;
+    right: 50%;
+    border-right: 2px solid #fbba00;
+}
+.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
+    display: none;
+}
+.genealogy-tree li:only-child{ 
+    padding-top: 0;
+}
+.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
+    border: 0 none;
+}
+.genealogy-tree li:last-child::before{
+    border-left: 2px solid #fbba00;
+    border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+.genealogy-tree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+.genealogy-tree ul ul::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 2px solid #fbba00;
+    width: 0;
+    height: 20px;
+}
+.genealogy-tree li a{
+    text-decoration: none;
+    color: #666;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.genealogy-tree li a:hover+ul li::after, 
+.genealogy-tree li a:hover+ul li::before, 
+.genealogy-tree li a:hover+ul::before, 
+.genealogy-tree li a:hover+ul ul::before{
+    border-color:  #fbba00;
+}
+
+/*--------------memeber-card-design----------*/
+.member-view-box{
+    padding: 0px 0px;
+    text-align: center;
+    border-radius: 4px;
+    position: relative;
+}
+.member-image{
+    /* width: 60px; */
+    position: relative;
+}
+.member-image img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #fff;
+    z-index: 1;
+    /* border: 1px solid #5c5858; */
+    /* padding: 4px; */
+}
+
+.col-xs-5 {
+    width: 41.66666667%;
+}
+
+ .col-xs-4 {
+    /* width: 33.33333333%; */
+}
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    position: relative;
+    min-height: 1px;
+    /* padding-right: 15px; */
+    /* padding-left: 15px; */
+}
+
+@media only screen and (max-width: 767px) { 
+	.col-xs-5 {
+    width: 100%;
+}
+
+ .col-xs-4 {
+    width: 100%;
+}
+	.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+}
+#level {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: "Almarai", Roboto, sans-serif;
+}
+
+#level td, #level th {
+  border: 1px solid #ddd;
+  padding: 12px 0 12px 6px;
+  text-align: right;
+}
+
+ 
+#level th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #04aa6d;
+  color: white;
+  font-weight: 600;
+}
+
+
+.labeel{
+	position: absolute;
+	top: -4px;
+	right: 0px;
+	text-align: center;
+	font-size: 9px;
+	padding: 2px 3px;
+	line-height: .9;
+}
+
+.filter{
+	position: absolute;
+	right: -11px;
+	text-align: center;
+	font-size: 14px;
+	padding: 4px 12px;
+	line-height: 18px;
+	background: #f1f1f1;
+	color: #121111;
+	font-weight: 600;
+	top: 30%;
+	border-radius: 20px;
+	height: 18px;
+	width: 18px;
+	border: 1px solid #e4e4e4;
+}
+
+ .backcircleredheart {
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    border: 1px solid;
+    background: #fff;
+}
+
+ .myheart {
+    font-size: 13px;
+    color: red;
+    line-height: 17px !important;
+}
+
+ .name {
+    margin-bottom: 5px;
+    font-size: 15px;
+    font-family: "Almarai", Roboto, sans-serif;
+    margin-top: 5px;
+    color: #ff8025;
+}
+
+ .code {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-family: "Almarai", Roboto, sans-serif;
+    margin-top: 5px;
+    color: black;
+}
+
+ .points {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-family: "Almarai", Roboto, sans-serif;
+    margin-top: 5px;
+    color: black;
+}
+
+ .team {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-family: "Almarai", Roboto, sans-serif;
+    margin-top: 5px;
+    color: black;
+}
+
+.sidenav {
+  /* height: 100%; */
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #fcb632;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 0px;
+  color: aliceblue;
+}
+
+.sidenav a {
+  padding: 0px 0px 0px 23px;
+  text-decoration: none;
+  font-size: 25px;
+  color: red;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: red;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  left: -18px;
+  font-size: 36px;
+  /* margin-right: 50px; */
+  z-index: 999999;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+ .redheart {
+    font-size: 16px;
+    line-height: 22px !important;
+    text-align: center;
+    background: #ffffff;
+	 color: red;
+}
+
+ .yellowheart {
+    font-size: 16px;
+    line-height: 22px !important;
+    text-align: center;
+    color: #ffffff;
+    /* border: 1px solid #fff; */
+}
+
+.backcircleyellowheart {
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    /* border: 1px solid; */
+    background: #fcc509;
+    /* border: 1px solid #fff; */
+}
+
+.member-image .imgg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    /* background-color: #000; */
+    z-index: 1;
+    border: 1px solid #5c5858;
+    padding: 4px;
+}
+
+.member-image .noimg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #fca280;
+    z-index: 1;
+    border: 1px solid #5c5858;
+    padding: 4px;
+}
+
+ .percentage {
+    position: absolute;
+    top: 15%;
+    color: #fff;
+    font-size: 26px;
+    left: 18px;
+    text-align: center;
+    font-weight: 600;
+    left: 50%;
+}
+
+ .filtericon {
+    font-size: 30px;
+    cursor: pointer;
+    /* float: right; */
+    direction: rtl;
+}
+
+ .backbody {
+     background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.imgfilteer{margin-bottom: -5px;}

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ElYamanyDashboard.Models.DailyUserSalary>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2 style="text-align:center;color:white;border-radius:25px;background:#007bff">قبض الأعضاء</h2>
+<div class="card">
+    <div class="card-header center-block">
+        <h4>مجموع قبض الاعضاء خلال الشهر الحالي :- @ViewBag.TotalSalaryInThisMonth</h4>
+    </div>
+   
+    <label>اجمالي العدد :- @ViewBag.Total</label>
+
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("اسم العضو")
+                    </th>
+                    <th>
+                        @Html.DisplayName("كود العضو")
+                    </th>
+                    <th>
+                        @Html.DisplayName("الراعي")
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PersonalPoints)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GroupPoints)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Deduction)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SalaryAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.UserCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.SponsorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonalPoints)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GroupPoints)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Deduction)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SalaryAmountInt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDateEgypt)
+                        </td>
+
+                    </tr>
+
+
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>

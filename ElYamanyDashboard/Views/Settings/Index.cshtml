@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ElYamanyDashboard.Models.Setting>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 style="text-align:center;color:white;border-radius:25px;background:#007bff">الإعدادات</h2>
+
+
+<div class="card">
+    <!-- /.card-header -->
+    <h3 style="text-align:center;color:green;"> @ViewBag.Message</h3>
+
+    <div>
+        <a href="/Settings/CalculateSalaryForAllUsers" class="btn btn-primary" style="background-color:@ViewBag.Color1;">
+            <i class="fa fa-info" aria-hidden="true"></i>حساب القبض للاعضاء للشهر الحالي
+        </a>
+        <a href="/Settings/StopMakingOrder" class="btn btn-primary" style="background-color:@ViewBag.Color1;">
+            <i class="fa fa-info" aria-hidden="true"></i>ايقاف الطلبات للاعضاء
+        </a>
+        <a href="/Settings/EnableMakingOrder" class="btn btn-primary" style="background-color:@ViewBag.Color1;">
+            <i class="fa fa-info" aria-hidden="true"></i>تفعيل الطلبات للاعضاء
+        </a>
+
+    </div>
+    <div class="card-body">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MakeOrders)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Whatsapp)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MakeOrders)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Whatsapp)
+                        </td>
+                        <td>
+                            @Html.ActionLink("تعديل", "Edit", new { id = item.Id })
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
+
