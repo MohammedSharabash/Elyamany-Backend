@@ -1,5 +1,24 @@
-﻿@{ 
-    Layout = null;}
+﻿@model Elyamany.Models.search
+@{ 
+    Layout = null;
+    //var levelTop = ViewBag.levels as List<ElYamanyDashboard.Models.LevelsSetting>;
+    //var levelUser = ViewBag.dd as ElYamanyDashboard.Models.Views.Parent;
+    //var count = levelUser.children.SelectMany(x => x.children).ToList();
+    //void Graph(ElYamanyDashboard.Models.Views.Parent parent)
+    //{
+
+    //    //base Case
+    //    if(parent.children == null)
+    //    {
+    //        return;
+    //    }
+    //            if (parent.children.Count() > 0)
+    //            {
+
+    //            }
+    //}
+
+}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +30,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Almarai|Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/Content/treestyle.css">
+    <script src="~/Content/js/script.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -23,17 +43,27 @@
 
         <div class="col-xs-12" style="direction: rtl;">
             <div class="col-xs-4 level">
-                <form asp-action="UserTree" method="post" style="text-align:center">
-                    <input hidden name="UserId" value="@ViewBag.UserId" />
+              
+                
+                <form action="@Url.Action("UserTree","Users")" method="post" style="text-align:center">
+
+                    <input hidden name="UserId" value="@Model.UserId" />
+
                     <table id="level">
+
                         @foreach (var level in ViewBag.levels)
                         {
-                            <tr>
-                                <td style="cursor:pointer">
-                                    <input type="radio" id="@level.Id" name="LevelsSettingId" value="@level.Id">
-                                    <label for="@level.LevelName">@level.LevelName</label>
-                                </td>
 
+                            <tr>
+                                @*<td style="cursor:pointer">
+                            <input type="radio" id="@level.Id" name="LevelsSettingId" value="@level.Id">
+                            <label for="@level.LevelName">@level.LevelName</label>
+                        </td>*@
+                                <td>
+
+                                    <input type="radio" id="@level.Id" name="LevelsSettingId" value="@level.Id" checked>
+                                    <label for="@level.Id">@level.LevelName</label>
+                                </td>
 
                             </tr>
 
@@ -41,78 +71,12 @@
 
                         }
 
-                        @*<tr>
-                                <td>
-                                    <input type="radio" id="level1" name="level" value="level1" checked>
-                                    <label for="level1">6%</label>
-                                </td>
-
-                                <td>
-                                    <input type="radio" id="level2" name="level" value="level2">
-                                    <label for="level2">9%</label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="radio" id="level3" name="level" value="level3">
-                                    <label for="level3">12%</label>
-                                </td>
-                                <td>
-                                    <input type="radio" id="level5" name="level" value="level5">
-                                    <label for="level5">15%</label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="radio" id="level6" name="level" value="level6">
-                                    <label for="level6">18%</label>
-                                </td>
-                                <td>
-                                    <input type="radio" id="level9" name="level" value="level9">
-                                    <label for="level9">21%</label>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <input type="radio" id="level8" name="level" value="level8">
-                                    <label for="level8">جدد</label>
-                                </td>
-                                <td>
-                                    <input type="radio" id="level7" name="level" value="level7">
-                                    <label for="level7">مباشر</label>
-                                </td>
-
-
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <input type="radio" id="level10" name="level" value="level10">
-                                    <label for="level10">نشطاء</label>
-                                </td>
-                                <td>
-                                    <input type="radio" id="level11" name="level" value="level11">
-                                    <label for="level11">بدون نقط</label>
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <td colspan="2" style="text-align: center;">
-                                    <input type="submit" id="level12" name="LevelsSettingId" value="4">
-                                    <label for="level12">كل المستويات</label>
-                                </td>
-
-                            </tr>*@
-
                     </table>
                     <button style="background: none; border: none; color: white; height: 2rem; cursor: pointer;" type="submit"> بحث</button>
 
                 </form>
 
+                
             </div>
         </div>
 
@@ -126,6 +90,7 @@
         <div class="genealogy-tree" id="panzoom">
             <ul>
                 <li>
+            
 
                     <a href="javascript:void(0);">
                         <div class="member-view-box">
@@ -142,130 +107,968 @@
 
                                     }
                                 </div>
-                               
+                                <span class="labeel backcircleredheart">
+                                    <i class="fas fa-heart  redheart"></i>
+                                </span>
                                 <span class="percentage">@ViewBag.dd.UserLevel</span>
                                 <span class="filter">+@ViewBag.dd.children.Count</span>
                                 <div class="member-details">
                                     <p class="name">@ViewBag.dd.fname </p>
                                     <p class="code">@ViewBag.dd.lname</p>
-                                    @*<p class="points">@ViewBag.dd.ChildrenSum </p>*@
+                                    @if (ViewBag.dd.ChildrenSum == null)
+            {
+ <p class="points">0 </p>
+            }
+            else
+            {
+                                <p class="points">@ViewBag.dd.ChildrenSum </p>
+            }
+                                    
                                     <p class="team">@ViewBag.dd.title </p>
                                 </div>
                             </div>
                         </div>
                     </a>
+
+                    @if (ViewBag.dd.children.Count == 0)
+            {
+                <p>لا توجد بيانات</p>
+            }
                     <ul class="active">
-                        <li>
-
-                            @foreach (var item in ViewBag.dd.children)
+                        
+                        @foreach (var item in ViewBag.dd.children)
+                        {
+                            
+                          
+                           
+                            if (item.children.Count > 0)
                             {
+                                <li>
+
+                                    <a href="javascript:void(0);">
+                                        <div class="member-view-box">
+                                            <div class="member-image">
+                                                <div class="imgg">
+                                                    @if (string.IsNullOrEmpty(item.photo))
+                                                    {
+                                                        <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@item.photo" alt="Member">
+
+                                                    }
+                                                </div>
+                                                @if (item.IsFavorite)
+                                                {
+                                                    <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@item.Id',@item.Id)">
+
+                                                        <i class="fas fa-heart  redheart @item.Id" id="@item.Id"></i>
+                                                    </span>
+                                                }
+                                                else
+                                                { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@item.Id',@item.Id)">
 
 
-                                if (item.children.Count > 0)
-                                {
+                                                        <i class="fas fa-heart  yellowheart @item.Id" id="@item.Id"></i>
 
+                                                    </span>
 
-                                       <a href="javascript:void(0);">
-                                           <div class="member-view-box">
-                                               <div class="member-image">
-                                                   <div class="imgg">
-                                                       @if (string.IsNullOrEmpty(item.photo))
-                                                       {
-                                                           <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
-
-                                                       }
-                                                       else
-                                                       {
-                                                           <img src="@item.photo" alt="Member">
-
-                                                       }
-                                                   </div>
-                                                   @if (item.IsFavorite)
-                                                   {
-                                                       <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@item.Id',@item.Id)">
-
-                                                           <i class="fas fa-heart  redheart @item.Id" id="@item.Id"></i>
-                                                       </span>
-                                                   }
-                                                   else
-                                                   { <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@item.Id',@item.Id)">
-
-
-                                                           <i style="font-size: 16px; line-height: 22px !important; text-align: center; background: #ffffff; color: grey;" class="fas fa-heart @item.Id" id="@item.Id"></i>
-
-                                                       </span>
-
-                                                   }
-                                                   <span class="percentage">@item.UserLevel</span>
-                                                   <span class="filter">+ @item.children.Count </span>
-                                                   <div class="member-details">
-                                                       <p class="name">@item.fname </p>
-                                                       <p class="code">@item.lname</p>
-                                                       @*<p class="points">@item.ChildrenSum </p>*@
-                                                       <p class="team">@item.title </p>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                       </a>
+                                                }
+                                                @if (item.UserLevel == "دون المستوى")
+                                                {
+                                                    <span class="percentage">دون المستوي</span>
+                                                }
+                    else
+                    {
+                                            <span class="percentage">@item.UserLevel</span>
+                    }
+                                                <span class="filter">+ @item.children.Count </span>
+                                                <div class="member-details">
+                                                    <p class="name">@item.fname </p>
+                                                    <p class="code">@item.lname</p>
+                                                    @if (item.ChildrenSum == null)
+                    {
+                    <p class="points">0 </p>
+                    }
+                    else
+                    {
+                                                <p class="points">@item.ChildrenSum </p>
+                    }
+                                                    
+                                                    <p class="team">@item.title </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
 
 
 
 
 
-                                       <ul>
-                                           @foreach (var child in item.children)
-                                           {
-                                               <li>
-                                                   <a href="javascript:void(0);">
-                                                       <div class="member-view-box">
-                                                           <div class="member-image">
-                                                               <div class="imgg">
-                                                                   @if (string.IsNullOrEmpty(child.photo))
-                                                                   {
-                                                                       <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+                                    <ul>
+                                       
+                                            @foreach (var child in item.children)
+                                            {
+                                               
+                                                <li>
+                                                    <a href="javascript:void(0);">
+                                                        <div class="member-view-box">
+                                                            <div class="member-image">
+                                                                <div class="imgg">
+                                                                    @if (string.IsNullOrEmpty(child.photo))
+                                                                    {
+                                                                        <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
 
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       <img src="@child.photo" alt="Member">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="@child.photo" alt="Member">
 
-                                                                   }
-                                                               </div>
-                                                               @if (child.IsFavorite)
-                                                               {
-                                                                   <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@child.Id',@child.Id)">
+                                                                    }
+                                                                </div>
+                                                                @if (child.IsFavorite)
+                                                                {
+                                                                    <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@child.Id',@child.Id)">
 
-                                                                       <i class="fas fa-heart  redheart @child.Id" id="@child.Id"></i>
-                                                                   </span>
-                                                               }
-                                                               else
-                                                               { <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@child.Id',@child.Id)">
+                                                                        <i class="fas fa-heart  redheart @child.Id" id="@child.Id"></i>
+                                                                    </span>
+                                                                }
+                                                                else
+                                                                { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@child.Id',@child.Id)">
 
 
-                                                                       <i style="font-size: 16px; line-height: 22px !important; text-align: center; background: #ffffff; color: grey;" class="fas fa-heart @child.Id" id="@child.Id"></i>
+                                                                        <i class="fas fa-heart  yellowheart @child.Id" id="@child.Id"></i>
 
-                                                                   </span>
+                                                                    </span>
 
-                                                               }
-                                                               <span class="percentage">@child.UserLevel</span>
-                                                               <div class="member-details">
-                                                                   <p class="name">@child.fname </p>
-                                                                   <p class="code">@child.lname</p>
-                                                                   @*<p class="points">@child.ChildrenSum </p>*@
-                                                                   <p class="team">@child.title </p>
-                                                               </div>
-                                                           </div>
-                                                       </div>
-                                                   </a>
-                                                   
-                                               </li>
-                                           }
+                                                                }
+                                                                @if (item.UserLevel == "دون المستوى")
+                                                                {
+                                                                    <span class="percentage" >دون المستوي</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="percentage" >@child.UserLevel</span>
+                                                                }
+                                                                <span class="filter">+@child.children.Count</span>
+                                                                <div class="member-details">
+                                                                    <p class="name">@child.fname </p>
+                                                                    <p class="code">@child.lname</p>
+                                                                    @if (child.ChildrenSum == null)
+                                                                    {
+                                                                        <p class="points">0 </p>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <p class="points">@child.ChildrenSum </p>
+                                                                    }
 
-                                       </ul>}
-               
-                                       }
-                        </li>
+                                                                    <p class="team">@child.title </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <ul>
+                                                        @if (child.children.Count > 0)
+
+                                                        {
+                                                            foreach (var x in child.children)
+                                                            {
+
+                                                            <li>
+                                                                <a href="javascript:void(0);">
+                                                                    <div class="member-view-box">
+                                                                        <div class="member-image">
+                                                                            <div class="imgg">
+                                                                                @if (string.IsNullOrEmpty(x.photo))
+                                                                                {
+                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <img src="@x.photo" alt="Member">
+
+                                                                                }
+                                                                            </div>
+                                                                            @if (x.IsFavorite)
+                                                                            {
+                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@x.Id',@x.Id)">
+
+                                                                                    <i class="fas fa-heart  redheart @x.Id" id="@x.Id"></i>
+                                                                                </span>
+                                                                            }
+                                                                            else
+                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@x.Id',@x.Id)">
+
+
+                                                                                    <i class="fas fa-heart  yellowheart @x.Id" id="@x.Id"></i>
+
+                                                                                </span>
+
+                                                                            }
+                                                                            @if (x.UserLevel == "دون المستوى")
+                                                                            {
+                                                                                <span class="percentage">دون المستوي</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="percentage">@x.UserLevel</span>
+                                                                            }
+                                                                            <span class="filter">+@x.children.Count</span>
+                                                                            <div class="member-details">
+                                                                                <p class="name">@x.fname </p>
+                                                                                <p class="code">@x.lname</p>
+                                                                                @if (x.ChildrenSum == null)
+                                                                                {
+                                                                                    <p class="points">0 </p>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <p class="points">@x.ChildrenSum </p>
+                                                                                }
+
+                                                                                <p class="team">@x.title </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+ 
+                                                                <ul>
+                                                                    @if (x.children.Count > 0)
+                                                                    {
+                                                                        foreach (var ch in x.children)
+                                                                        {
+
+                                                                            <li>
+                                                                                <a href="javascript:void(0);">
+                                                                                    <div class="member-view-box">
+                                                                                        <div class="member-image">
+                                                                                            <div class="imgg">
+                                                                                                @if (string.IsNullOrEmpty(ch.photo))
+                                                                                                {
+                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <img src="@ch.photo" alt="Member">
+
+                                                                                                }
+                                                                                            </div>
+                                                                                            @if (ch.IsFavorite)
+                                                                                            {
+                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch.Id',@ch.Id)">
+
+                                                                                                    <i class="fas fa-heart  redheart @ch.Id" id="@ch.Id"></i>
+                                                                                                </span>
+                                                                                            }
+                                                                                            else
+                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch.Id',@ch.Id)">
+
+
+                                                                                                    <i class="fas fa-heart  yellowheart @ch.Id" id="@ch.Id"></i>
+
+                                                                                                </span>
+
+                                                                                            }
+                                                                                            @if (ch.UserLevel == "دون المستوى")
+                                                                                            {
+                                                                                                <span class="percentage"  >دون المستوي</span>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <span class="percentage" >@ch.UserLevel</span>
+                                                                                            }
+                                                                                            <span class="filter">+@ch.children.Count</span>
+                                                                                            <div class="member-details">
+                                                                                                <p class="name">@ch.fname </p>
+                                                                                                <p class="code">@ch.lname</p>
+                                                                                                @if (ch.ChildrenSum == null)
+                                                                                                {
+                                                                                                    <p class="points">0 </p>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <p class="points">@ch.ChildrenSum </p>
+                                                                                                }
+
+                                                                                                <p class="team">@ch.title </p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                                <ul>
+                                                                                    @if (ch.children.Count > 0)
+                                                                                    {
+                                                                                        foreach (var chi in ch.children)
+                                                                                        {
+
+                                                                                            <li>
+                                                                                                <a href="javascript:void(0);">
+                                                                                                    <div class="member-view-box">
+                                                                                                        <div class="member-image">
+                                                                                                            <div class="imgg">
+                                                                                                                @if (string.IsNullOrEmpty(chi.photo))
+                                                                                                                {
+                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <img src="@chi.photo" alt="Member">
+
+                                                                                                                }
+                                                                                                            </div>
+                                                                                                            @if (chi.IsFavorite)
+                                                                                                            {
+                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@chi.Id',@chi.Id)">
+
+                                                                                                                    <i class="fas fa-heart  redheart @chi.Id" id="@chi.Id"></i>
+                                                                                                                </span>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@chi.Id',@chi.Id)">
+
+
+                                                                                                                    <i class="fas fa-heart  yellowheart @chi.Id" id="@chi.Id"></i>
+
+                                                                                                                </span>
+
+                                                                                                            }
+                                                                                                            @if (chi.UserLevel == "دون المستوى")
+                                                                                                            {
+                                                                                                                <span class="percentage" >دون المستوي</span>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <span class="percentage">@chi.UserLevel</span>
+                                                                                                            }
+                                                                                                            <span class="filter">+@chi.children.Count</span>
+                                                                                                            <div class="member-details">
+                                                                                                                <p class="name">@chi.fname </p>
+                                                                                                                <p class="code">@chi.lname</p>
+                                                                                                                @if (chi.ChildrenSum == null)
+                                                                                                                {
+                                                                                                                    <p class="points">0 </p>
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    <p class="points">@chi.ChildrenSum </p>
+                                                                                                                }
+
+                                                                                                                <p class="team">@chi.title </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </a>
+                                                                                                <ul>
+                                                                                                    @if (chi.children.Count > 0)
+                                                                                                    {
+                                                                                                        foreach (var ch5 in chi.children)
+                                                                                                        {
+
+                                                                                                            <li>
+                                                                                                                <a href="javascript:void(0);">
+                                                                                                                    <div class="member-view-box">
+                                                                                                                        <div class="member-image">
+                                                                                                                            <div class="imgg">
+                                                                                                                                @if (string.IsNullOrEmpty(ch5.photo))
+                                                                                                                                {
+                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                }
+                                                                                                                                else
+                                                                                                                                {
+                                                                                                                                    <img src="@ch5.photo" alt="Member">
+
+                                                                                                                                }
+                                                                                                                            </div>
+                                                                                                                            @if (ch5.IsFavorite)
+                                                                                                                            {
+                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch5.Id',@ch5.Id)">
+
+                                                                                                                                    <i class="fas fa-heart  redheart @ch5.Id" id="@ch5.Id"></i>
+                                                                                                                                </span>
+                                                                                                                            }
+                                                                                                                            else
+                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch5.Id',@ch5.Id)">
+
+
+                                                                                                                                    <i class="fas fa-heart  yellowheart @ch5.Id" id="@ch5.Id"></i>
+
+                                                                                                                                </span>
+
+                                                                                                                            }
+                                                                                                                            @if (ch5.UserLevel == "دون المستوى")
+                                                                                                                            {
+                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                            }
+                                                                                                                            else
+                                                                                                                            {
+                                                                                                                                <span class="percentage">@ch5.UserLevel</span>
+                                                                                                                            }
+                                                                                                                            <span class="filter">+@ch5.children.Count</span>
+                                                                                                                            <div class="member-details">
+                                                                                                                                <p class="name">@ch5.fname </p>
+                                                                                                                                <p class="code">@ch5.lname</p>
+                                                                                                                                @if (ch5.ChildrenSum == null)
+                                                                                                                                {
+                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                }
+                                                                                                                                else
+                                                                                                                                {
+                                                                                                                                    <p class="points">@ch5.ChildrenSum </p>
+                                                                                                                                }
+
+                                                                                                                                <p class="team">@ch5.title </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </a>
+                                                                                                                <ul>
+                                                                                                                    @if (ch5.children.Count > 0)
+                                                                                                                    {
+                                                                                                                        foreach (var ch6 in ch5.children)
+                                                                                                                        {
+
+                                                                                                                            <li>
+                                                                                                                                <a href="javascript:void(0);">
+                                                                                                                                    <div class="member-view-box">
+                                                                                                                                        <div class="member-image">
+                                                                                                                                            <div class="imgg">
+                                                                                                                                                @if (string.IsNullOrEmpty(ch6.photo))
+                                                                                                                                                {
+                                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                                }
+                                                                                                                                                else
+                                                                                                                                                {
+                                                                                                                                                    <img src="@ch6.photo" alt="Member">
+
+                                                                                                                                                }
+                                                                                                                                            </div>
+                                                                                                                                            @if (ch6.IsFavorite)
+                                                                                                                                            {
+                                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch6.Id',@ch6.Id)">
+
+                                                                                                                                                    <i class="fas fa-heart  redheart @ch5.Id" id="@ch5.Id"></i>
+                                                                                                                                                </span>
+                                                                                                                                            }
+                                                                                                                                            else
+                                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch6.Id',@ch6.Id)">
+
+
+                                                                                                                                                    <i class="fas fa-heart  yellowheart @ch6.Id" id="@ch6.Id"></i>
+
+                                                                                                                                                </span>
+
+                                                                                                                                            }
+                                                                                                                                            @if (ch6.UserLevel == "دون المستوى")
+                                                                                                                                            {
+                                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                                            }
+                                                                                                                                            else
+                                                                                                                                            {
+                                                                                                                                                <span class="percentage">@ch6.UserLevel</span>
+                                                                                                                                            }
+                                                                                                                                            <span class="filter">+@ch6.children.Count</span>
+                                                                                                                                            <div class="member-details">
+                                                                                                                                                <p class="name">@ch6.fname </p>
+                                                                                                                                                <p class="code">@ch6.lname</p>
+                                                                                                                                                @if (ch6.ChildrenSum == null)
+                                                                                                                                                {
+                                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                                }
+                                                                                                                                                else
+                                                                                                                                                {
+                                                                                                                                                    <p class="points">@ch6.ChildrenSum </p>
+                                                                                                                                                }
+
+                                                                                                                                                <p class="team">@ch6.title </p>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </a>
+                                                                                                                                <ul>
+                                                                                                                                    @if (ch5.children.Count > 0)
+                                                                                                                                    {
+                                                                                                                                        foreach (var ch7 in ch6.children)
+                                                                                                                                        {
+
+                                                                                                                                            <li>
+                                                                                                                                                <a href="javascript:void(0);">
+                                                                                                                                                    <div class="member-view-box">
+                                                                                                                                                        <div class="member-image">
+                                                                                                                                                            <div class="imgg">
+                                                                                                                                                                @if (string.IsNullOrEmpty(ch7.photo))
+                                                                                                                                                                {
+                                                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                                                }
+                                                                                                                                                                else
+                                                                                                                                                                {
+                                                                                                                                                                    <img src="@ch7.photo" alt="Member">
+
+                                                                                                                                                                }
+                                                                                                                                                            </div>
+                                                                                                                                                            @if (ch7.IsFavorite)
+                                                                                                                                                            {
+                                                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch7.Id',@ch7.Id)">
+
+                                                                                                                                                                    <i class="fas fa-heart  redheart @ch7.Id" id="@ch7.Id"></i>
+                                                                                                                                                                </span>
+                                                                                                                                                            }
+                                                                                                                                                            else
+                                                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch7.Id',@ch7.Id)">
+
+
+                                                                                                                                                                    <i class="fas fa-heart  yellowheart @ch7.Id" id="@ch7.Id"></i>
+
+                                                                                                                                                                </span>
+
+                                                                                                                                                            }
+                                                                                                                                                            @if (ch6.UserLevel == "دون المستوى")
+                                                                                                                                                            {
+                                                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                                                            }
+                                                                                                                                                            else
+                                                                                                                                                            {
+                                                                                                                                                                <span class="percentage">@ch7.UserLevel</span>
+                                                                                                                                                            }
+                                                                                                                                                            <span class="filter">+@ch7.children.Count</span>
+                                                                                                                                                            <div class="member-details">
+                                                                                                                                                                <p class="name">@ch7.fname </p>
+                                                                                                                                                                <p class="code">@ch7.lname</p>
+                                                                                                                                                                @if (ch7.ChildrenSum == null)
+                                                                                                                                                                {
+                                                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                                                }
+                                                                                                                                                                else
+                                                                                                                                                                {
+                                                                                                                                                                    <p class="points">@ch7.ChildrenSum </p>
+                                                                                                                                                                }
+
+                                                                                                                                                                <p class="team">@ch7.title </p>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                                </a>
+                                                                                                                                                <ul>
+                                                                                                                                                    @if (ch7.children.Count > 0)
+                                                                                                                                                    {
+                                                                                                                                                        foreach (var ch8 in ch7.children)
+                                                                                                                                                        {
+
+                                                                                                                                                            <li>
+                                                                                                                                                                <a href="javascript:void(0);">
+                                                                                                                                                                    <div class="member-view-box">
+                                                                                                                                                                        <div class="member-image">
+                                                                                                                                                                            <div class="imgg">
+                                                                                                                                                                                @if (string.IsNullOrEmpty(ch8.photo))
+                                                                                                                                                                                {
+                                                                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                                                                }
+                                                                                                                                                                                else
+                                                                                                                                                                                {
+                                                                                                                                                                                    <img src="@ch8.photo" alt="Member">
+
+                                                                                                                                                                                }
+                                                                                                                                                                            </div>
+                                                                                                                                                                            @if (ch8.IsFavorite)
+                                                                                                                                                                            {
+                                                                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch8.Id',@ch8.Id)">
+
+                                                                                                                                                                                    <i class="fas fa-heart  redheart @ch8.Id" id="@ch8.Id"></i>
+                                                                                                                                                                                </span>
+                                                                                                                                                                            }
+                                                                                                                                                                            else
+                                                                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch8.Id',@ch8.Id)">
+
+
+                                                                                                                                                                                    <i class="fas fa-heart  yellowheart @ch8.Id" id="@ch8.Id"></i>
+
+                                                                                                                                                                                </span>
+
+                                                                                                                                                                            }
+                                                                                                                                                                            @if (ch8.UserLevel == "دون المستوى")
+                                                                                                                                                                            {
+                                                                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                                                                            }
+                                                                                                                                                                            else
+                                                                                                                                                                            {
+                                                                                                                                                                                <span class="percentage">@ch8.UserLevel</span>
+                                                                                                                                                                            }
+                                                                                                                                                                            <span class="filter">+@ch8.children.Count</span>
+                                                                                                                                                                            <div class="member-details">
+                                                                                                                                                                                <p class="name">@ch8.fname </p>
+                                                                                                                                                                                <p class="code">@ch8.lname</p>
+                                                                                                                                                                                @if (ch6.ChildrenSum == null)
+                                                                                                                                                                                {
+                                                                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                                                                }
+                                                                                                                                                                                else
+                                                                                                                                                                                {
+                                                                                                                                                                                    <p class="points">@ch8.ChildrenSum </p>
+                                                                                                                                                                                }
+
+                                                                                                                                                                                <p class="team">@ch8.title </p>
+                                                                                                                                                                            </div>
+                                                                                                                                                                        </div>
+                                                                                                                                                                    </div>
+                                                                                                                                                                </a>
+                                                                                                                                                                <ul>
+                                                                                                                                                                    @if (ch8.children.Count > 0)
+                                                                                                                                                                    {
+                                                                                                                                                                        foreach (var ch9 in ch8.children)
+                                                                                                                                                                        {
+
+                                                                                                                                                                            <li>
+                                                                                                                                                                                <a href="javascript:void(0);">
+                                                                                                                                                                                    <div class="member-view-box">
+                                                                                                                                                                                        <div class="member-image">
+                                                                                                                                                                                            <div class="imgg">
+                                                                                                                                                                                                @if (string.IsNullOrEmpty(ch9.photo))
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                                                                                }
+                                                                                                                                                                                                else
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    <img src="@ch9.photo" alt="Member">
+
+                                                                                                                                                                                                }
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                            @if (ch9.IsFavorite)
+                                                                                                                                                                                            {
+                                                                                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch9.Id',@ch9.Id)">
+
+                                                                                                                                                                                                    <i class="fas fa-heart  redheart @ch9.Id" id="@ch9.Id"></i>
+                                                                                                                                                                                                </span>
+                                                                                                                                                                                            }
+                                                                                                                                                                                            else
+                                                                                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch9.Id',@ch9.Id)">
+
+
+                                                                                                                                                                                                    <i class="fas fa-heart  yellowheart @ch9.Id" id="@ch9.Id"></i>
+
+                                                                                                                                                                                                </span>
+
+                                                                                                                                                                                            }
+                                                                                                                                                                                            @if (ch9.UserLevel == "دون المستوى")
+                                                                                                                                                                                            {
+                                                                                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                                                                                            }
+                                                                                                                                                                                            else
+                                                                                                                                                                                            {
+                                                                                                                                                                                                <span class="percentage">@ch9.UserLevel</span>
+                                                                                                                                                                                            }
+                                                                                                                                                                                            <span class="filter">+@ch9.children.Count</span>
+                                                                                                                                                                                            <div class="member-details">
+                                                                                                                                                                                                <p class="name">@ch9.fname </p>
+                                                                                                                                                                                                <p class="code">@ch9.lname</p>
+                                                                                                                                                                                                @if (ch9.ChildrenSum == null)
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                                                                                }
+                                                                                                                                                                                                else
+                                                                                                                                                                                                {
+                                                                                                                                                                                                    <p class="points">@ch9.ChildrenSum </p>
+                                                                                                                                                                                                }
+
+                                                                                                                                                                                                <p class="team">@ch9.title </p>
+                                                                                                                                                                                            </div>
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                </a>
+                                                                                                                                                                                <ul>
+                                                                                                                                                                                    @if (ch9.children.Count > 0)
+                                                                                                                                                                                    {
+                                                                                                                                                                                        foreach (var ch10 in ch9.children)
+                                                                                                                                                                                        {
+
+                                                                                                                                                                                            <li>
+                                                                                                                                                                                                <a href="javascript:void(0);">
+                                                                                                                                                                                                    <div class="member-view-box">
+                                                                                                                                                                                                        <div class="member-image">
+                                                                                                                                                                                                            <div class="imgg">
+                                                                                                                                                                                                                @if (string.IsNullOrEmpty(ch10.photo))
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                                else
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    <img src="@ch10.photo" alt="Member">
+
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                            @if (ch10.IsFavorite)
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch10.Id',@ch10.Id)">
+
+                                                                                                                                                                                                                    <i class="fas fa-heart  redheart @ch10.Id" id="@ch10.Id"></i>
+                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                            else
+                                                                                                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch10.Id',@ch10.Id)">
+
+
+                                                                                                                                                                                                                    <i class="fas fa-heart  yellowheart @ch10.Id" id="@ch10.Id"></i>
+
+                                                                                                                                                                                                                </span>
+
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                            @if (ch10.UserLevel == "دون المستوى")
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                            else
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                <span class="percentage">@ch10.UserLevel</span>
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                            <span class="filter">+@ch10.children.Count</span>
+                                                                                                                                                                                                            <div class="member-details">
+                                                                                                                                                                                                                <p class="name">@ch10.fname </p>
+                                                                                                                                                                                                                <p class="code">@ch10.lname</p>
+                                                                                                                                                                                                                @if (ch10.ChildrenSum == null)
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                                                                                                }
+                                                                                                                                                                                                                else
+                                                                                                                                                                                                                {
+                                                                                                                                                                                                                    <p class="points">@ch10.ChildrenSum </p>
+                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                <p class="team">@ch10.title </p>
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </a>
+                                                                                                                                                                                                <ul>
+                                                                                                                                                                                                    @if (ch10.children.Count > 0)
+                                                                                                                                                                                                    {
+                                                                                                                                                                                                        foreach (var ch11 in ch10.children)
+                                                                                                                                                                                                        {
+
+                                                                                                                                                                                                            <li>
+                                                                                                                                                                                                                <a href="javascript:void(0);">
+                                                                                                                                                                                                                    <div class="member-view-box">
+                                                                                                                                                                                                                        <div class="member-image">
+                                                                                                                                                                                                                            <div class="imgg">
+                                                                                                                                                                                                                                @if (string.IsNullOrEmpty(ch11.photo))
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    <img src="@ch11.photo" alt="Member">
+
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            @if (ch11.IsFavorite)
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch11.Id',@ch11.Id)">
+
+                                                                                                                                                                                                                                    <i class="fas fa-heart  redheart @ch11.Id" id="@ch11.Id"></i>
+                                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch11.Id',@ch11.Id)">
+
+
+                                                                                                                                                                                                                                    <i class="fas fa-heart  yellowheart @ch11.Id" id="@ch11.Id"></i>
+
+                                                                                                                                                                                                                                </span>
+
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            @if (ch11.UserLevel == "دون المستوى")
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                <span class="percentage">@ch11.UserLevel</span>
+                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                            <span class="filter">+@ch11.children.Count</span>
+                                                                                                                                                                                                                            <div class="member-details">
+                                                                                                                                                                                                                                <p class="name">@ch11.fname </p>
+                                                                                                                                                                                                                                <p class="code">@ch11.lname</p>
+                                                                                                                                                                                                                                @if (ch11.ChildrenSum == null)
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                    <p class="points">@ch11.ChildrenSum </p>
+                                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                                <p class="team">@ch11.title </p>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                </a>
+                                                                                                                                                                                                                <ul>
+                                                                                                                                                                                                                    @if (ch11.children.Count > 0)
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                        foreach (var ch12 in ch11.children)
+                                                                                                                                                                                                                        {
+
+                                                                                                                                                                                                                            <li>
+                                                                                                                                                                                                                                <a href="javascript:void(0);">
+                                                                                                                                                                                                                                    <div class="member-view-box">
+                                                                                                                                                                                                                                        <div class="member-image">
+                                                                                                                                                                                                                                            <div class="imgg">
+                                                                                                                                                                                                                                                @if (string.IsNullOrEmpty(ch12.photo))
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    <img src="~/Content/img/about-style3-bg.jpg" alt="Member">
+
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    <img src="@ch12.photo" alt="Member">
+
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                            @if (ch12.IsFavorite)
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                <span class="labeel backcircleredheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch12.Id',@ch12.Id)">
+
+                                                                                                                                                                                                                                                    <i class="fas fa-heart  redheart @ch12.Id" id="@ch12.Id"></i>
+                                                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                            { <span class="labeel backcircleyellowheart" onclick="AddFavorite('/users/favorite?userid=@ViewBag.UserId&selected=@ch12.Id',@ch12.Id)">
+
+
+                                                                                                                                                                                                                                                    <i class="fas fa-heart  yellowheart @ch12.Id" id="@ch12.Id"></i>
+
+                                                                                                                                                                                                                                                </span>
+
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                            @if (ch12.UserLevel == "دون المستوى")
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                <span class="percentage">دون المستوي</span>
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                            else
+                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                <span class="percentage">@ch12.UserLevel</span>
+                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                            <span class="filter">+@ch12.children.Count</span>
+                                                                                                                                                                                                                                            <div class="member-details">
+                                                                                                                                                                                                                                                <p class="name">@ch12.fname </p>
+                                                                                                                                                                                                                                                <p class="code">@ch12.lname</p>
+                                                                                                                                                                                                                                                @if (ch12.ChildrenSum == null)
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    <p class="points">0 </p>
+                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                else
+                                                                                                                                                                                                                                                {
+                                                                                                                                                                                                                                                    <p class="points">@ch12.ChildrenSum </p>
+                                                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                                                <p class="team">@ch12.title </p>
+                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                </a>
+
+                                                                                                                                                                                                                            </li>
+
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                                </ul>
+
+                                                                                                                                                                                                            </li>
+
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                    }
+
+                                                                                                                                                                                                </ul>
+
+                                                                                                                                                                                            </li>
+
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+
+                                                                                                                                                                                </ul>
+                                                                                                                                                                               
+                                                                                                                                                                                
+                                                                                                                                                                            </li>
+
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+
+                                                                                                                                                                </ul>
+                                                                                                                                                            </li>
+
+                                                                                                                                                        }
+                                                                                                                                                    }
+
+                                                                                                                                                </ul>
+                                                                                                                                            </li>
+
+                                                                                                                                        }
+                                                                                                                                    }
+
+                                                                                                                                </ul>
+
+                                                                                                                            </li>
+
+                                                                                                                        }
+                                                                                                                    }
+
+                                                                                                                </ul>
+
+                                                                                                            </li>
+
+                                                                                                        }
+                                                                                                    }
+
+                                                                                                </ul>
+
+                                                                                            </li>
+
+                                                                                        }
+                                                                                    }
+
+                                                                                </ul>
+
+                                                                            </li>
+
+                                                                        }
+                                                                    }
+
+                                                                </ul>
+
+                                                            </li>
+
+                                                            }
+                                                        }
+                                                    </ul>
+
+                                                </li>
+
+                                            }
+                                      
+
+
+                                    </ul>
+
+                                </li>
+                            }
+                        }
+                        @if (ViewBag.dd.children == null)
+                        {
+                            <li><p>لا توجد بيانات</p></li>
+                        }
                     </ul>
+                   
                 </li>
             </ul>
         </div>
@@ -329,7 +1132,7 @@
                             }
                             else {
                             //    toastr.error(data.message);
-                                $("#"+id).css("color", "grey");
+                                $("#"+id).css("color", "yellow");
 
                             }
                         }
@@ -350,7 +1153,7 @@
                         success: function (data) {
                             if (data) {
                                 //toastr.success("تم الازالة من المفضلة بنجاح");
-                                $('#'+id).css("color", "grey");
+                                $('#'+id).css("color", "yellow");
                                 //    setInterval('location.reload()', 2500);
                                 location.reload();
                             }

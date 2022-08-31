@@ -42,13 +42,13 @@
     direction: rtl;
     text-align: center;
 }
-.genealogy-tree li {
-    float: right;
-    text-align: center;
-    list-style-type: none;
-    position: relative;
-    padding: 20px 5px 0 5px;
-}
+    .genealogy-tree li {
+        float: right;
+        text-align: center;
+        list-style-type: none;
+        position: relative;
+        padding: 20px 40px 0 40px;
+    }
 .genealogy-tree li::before, .genealogy-tree li::after{
     content: '';
     position: absolute;
@@ -183,31 +183,31 @@
 }
 
 
-.labeel{
-	position: absolute;
-	top: -4px;
-	right: 0px;
-	text-align: center;
-	font-size: 9px;
-	padding: 2px 3px;
-	line-height: .9;
+.labeel {
+    position: absolute;
+    top: -4px;
+    right: auto;
+    text-align: center;
+    font-size: 9px;
+    padding: 2px 3px;
+    line-height: .9;
 }
 
-.filter{
-	position: absolute;
-	right: -11px;
-	text-align: center;
-	font-size: 14px;
-	padding: 4px 12px;
-	line-height: 18px;
-	background: #f1f1f1;
-	color: #121111;
-	font-weight: 600;
-	top: 30%;
-	border-radius: 20px;
-	height: 18px;
-	width: 18px;
-	border: 1px solid #e4e4e4;
+.filter {
+    position: absolute;
+    right: auto;
+    text-align: center;
+    font-size: 14px;
+    padding: 4px 12px;
+    line-height: 18px;
+    background: #f1f1f1;
+    color: #121111;
+    font-weight: 600;
+    top: 30%;
+    border-radius: 20px;
+    height: 18px;
+    width: 18px;
+    border: 1px solid #e4e4e4;
 }
 
  .backcircleredheart {
@@ -330,6 +330,8 @@
     z-index: 1;
     border: 1px solid #5c5858;
     padding: 4px;
+    margin: 0 auto;
+    display: block;
 }
 
 .member-image .noimg {
@@ -342,15 +344,16 @@
     padding: 4px;
 }
 
- .percentage {
+.percentage {
     position: absolute;
     top: 15%;
     color: #fff;
-    font-size: 26px;
-    left: 18px;
+    font-size: 14px;
     text-align: center;
     font-weight: 600;
-    left: 50%;
+    margin-top: 10px;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
 }
 
  .filtericon {

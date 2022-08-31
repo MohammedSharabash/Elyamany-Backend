@@ -1,25 +1,24 @@
-﻿using System;
+﻿using Elyamany.Models;
+using ElYamanyDashboard.Models;
+using ElYamanyDashboard.Models;
+using ElYamanyDashboard.Models.Views;
+using ElYamanyDashboard.Utils;
+using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.IO;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity;
-using ElYamanyDashboard.Models;
- using System.Data.Entity.Migrations;
- using Newtonsoft.Json;
-using System.Net.Http.Headers;
- using ElYamanyDashboard.Utils;
-using ElYamanyDashboard.Models.Views;
-using System.Web.Script.Serialization;
-using System.Text;
 
 namespace ElYamanyDashboard.Controllers
 {
@@ -43,15 +42,15 @@ namespace ElYamanyDashboard.Controllers
         }
         UserCodeGenerator _userCodeGenerator = new UserCodeGenerator();
         // GET: Users
-        public async Task<ActionResult> Index(int NewMembers=0,int NotActive=0)
+        public async Task<ActionResult> Index(int NewMembers = 0, int NotActive = 0)
         {
             List<User> users = new List<User>();
-            if (NotActive>0)
+            if (NotActive > 0)
             {
-                users =await db.Users.Include(u => u.Area).Include(u => u.Gender).Where(i=>i.Enabled==false).ToListAsync();
+                users = await db.Users.Include(u => u.Area).Include(u => u.Gender).Where(i => i.Enabled == false).ToListAsync();
 
             }
-            else if (NewMembers>0)
+            else if (NewMembers > 0)
             {
                 users = await db.Users.Include(u => u.Area).Include(u => u.Gender).Where(i => i.CreationDate.Value.Month == DateTime.UtcNow.Month).ToListAsync();
 
@@ -61,7 +60,7 @@ namespace ElYamanyDashboard.Controllers
                 users = await db.Users.Include(u => u.Area).Include(u => u.Gender).ToListAsync();
 
             }
-            ViewBag.Total=users.Count;
+            ViewBag.Total = users.Count;
             return View(users);
         }
 
@@ -100,7 +99,7 @@ namespace ElYamanyDashboard.Controllers
             if (ModelState.IsValid)
             {
                 var identityNumberFound = await GetUserByIdentityNumber(user.IdentityNumber);
-                if (identityNumberFound!=null)
+                if (identityNumberFound != null)
                 {
                     ViewBag.AreaId = new SelectList(db.Areas, "Id", "Name", user.AreaId);
                     ViewBag.GenderId = new SelectList(db.Genders, "Id", "Name", user.GenderId);
@@ -187,7 +186,7 @@ namespace ElYamanyDashboard.Controllers
                         await SetPhoto(IdentityBackImage, user.Id, "IdentityBackImage");
 
                     }
-                    return RedirectToAction("Details",new { id= user.Id});
+                    return RedirectToAction("Details", new { id = user.Id });
                 }
                 else
                 {
@@ -198,7 +197,7 @@ namespace ElYamanyDashboard.Controllers
                     ViewBag.Error = "Try again later";
                     return View(user);
                 }
-               
+
             }
 
             ViewBag.AreaId = new SelectList(db.Areas, "Id", "Name", user.AreaId);
@@ -209,7 +208,7 @@ namespace ElYamanyDashboard.Controllers
 
         public async Task<User> GetUserByPhoneNumber(string phoneNumber)
         {
-            var data =await  db.Users.AsNoTracking().Where(i => i.PhoneNumber == phoneNumber).FirstOrDefaultAsync();
+            var data = await db.Users.AsNoTracking().Where(i => i.PhoneNumber == phoneNumber).FirstOrDefaultAsync();
             return data;
 
         }
@@ -280,7 +279,7 @@ namespace ElYamanyDashboard.Controllers
             if (ModelState.IsValid)
             {
                 var OldUser = db.Users.AsNoTracking().Where(i => i.Id == user.Id).FirstOrDefault();
-                if (OldUser.IdentityNumber!=user.IdentityNumber)
+                if (OldUser.IdentityNumber != user.IdentityNumber)
                 {
                     var identityNumberFound = await GetUserByIdentityNumber(user.IdentityNumber);
                     if (identityNumberFound != null)
@@ -294,7 +293,7 @@ namespace ElYamanyDashboard.Controllers
 
                     }
                 }
-                if (OldUser.PhoneNumber!=user.PhoneNumber)
+                if (OldUser.PhoneNumber != user.PhoneNumber)
                 {
                     var phoneNumberFound = await GetUserByPhoneNumber(user.PhoneNumber);
                     if (phoneNumberFound != null)
@@ -446,7 +445,7 @@ SELECT t.Id,t.SponsorId,c.UserCode as SponsorUserCode ,t.FullName,t.UserCode,t.P
             if (Users.Count > 0)
             {
                 userReports = Users;
-                if (userData.SponsorId!=null)
+                if (userData.SponsorId != null)
                 {
                     userReports.FirstOrDefault().SponsorUserCode = db.Users.Where(i => i.Id == userData.SponsorId).FirstOrDefault().UserCode;
                 }
@@ -455,7 +454,7 @@ SELECT t.Id,t.SponsorId,c.UserCode as SponsorUserCode ,t.FullName,t.UserCode,t.P
 
             foreach (var user in userReports)
             {
-               
+
 
                 user.UserLevel = "--";
                 foreach (var item in Levels)
@@ -470,7 +469,7 @@ SELECT t.Id,t.SponsorId,c.UserCode as SponsorUserCode ,t.FullName,t.UserCode,t.P
 
             }
 
-            ViewBag.UserId = new SelectList(db.Users, "Id", "UserCode",UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "UserCode", UserId);
             ViewBag.UserData = db.Users.Where(i => i.Id == UserId).FirstOrDefault();
             return View(userReports);
         }
@@ -501,7 +500,7 @@ select Isnull( Sum(PersonalPoints),0) as GroupPoints from (	SELECT *,(select IsN
             foreach (var user in Users)
             {
                 user.GroupPoints = await GetGroupPoints(user.Id);
-                user.GroupPoints=user.PersonalPoints + user.GroupPoints;
+                user.GroupPoints = user.PersonalPoints + user.GroupPoints;
                 var UserPoints = user.GroupPoints;
 
                 user.UserLevel = "--";
@@ -514,29 +513,29 @@ select Isnull( Sum(PersonalPoints),0) as GroupPoints from (	SELECT *,(select IsN
                     }
 
                 }
-               
+
             }
 
             foreach (var levelData in Levels)
             {
-               var count = Users.Where(i => i.UserLevel == levelData.LevelName).Count();
+                var count = Users.Where(i => i.UserLevel == levelData.LevelName).Count();
                 levelData.Count = count;
-                levelData.SumOfPoints = Users.Where(i => i.UserLevel == levelData.LevelName).Sum(i=>i.GroupPoints);
+                levelData.SumOfPoints = Users.Where(i => i.UserLevel == levelData.LevelName).Sum(i => i.GroupPoints);
 
             }
             if (Users.Count > 0)
             {
                 userReports = Users;
             }
-            ViewBag.Levels = Levels.Where(i=>i.Count>0);
-            ViewBag.LevelsCount = Levels.Where(i=>i.Count>0).Count();
+            ViewBag.Levels = Levels.Where(i => i.Count > 0);
+            ViewBag.LevelsCount = Levels.Where(i => i.Count > 0).Count();
             return View(userReports);
         }
 
 
         public JsonResult GetName(string searchTerm)
         {
-            User user = new User() { Id=-1,UserCode="-1"};
+            User user = new User() { Id = -1, UserCode = "-1" };
             var categories = db.Users.Take(50).ToList();
 
             if (searchTerm != null)
@@ -555,7 +554,7 @@ select Isnull( Sum(PersonalPoints),0) as GroupPoints from (	SELECT *,(select IsN
 
         public async Task<ActionResult> GetUserPointsHistory(long? UserId)
         {
-            if (UserId>0)
+            if (UserId > 0)
             {
                 var Levels = db.LevelsSettings.ToList();
 
@@ -600,8 +599,8 @@ SELECT IsNull( Sum(TotalPoints),0) as grouppoint,(SELECT DATEPART(MONTH, Creatio
                     }
                 }
 
-                
-                ViewBag.UserId = new SelectList(db.Users, "Id", "UserCode",UserId);
+
+                ViewBag.UserId = new SelectList(db.Users, "Id", "UserCode", UserId);
                 ViewBag.UserData = db.Users.Where(i => i.Id == UserId).FirstOrDefault();
 
                 return View(Personalpoints);
@@ -614,15 +613,15 @@ SELECT IsNull( Sum(TotalPoints),0) as grouppoint,(SELECT DATEPART(MONTH, Creatio
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> UsersReportForWebView(long UserId,long SponsorId=0)
+        public async Task<ActionResult> UsersReportForWebView(long UserId, long SponsorId = 0)
         {
-            if (SponsorId==0)
+            if (SponsorId == 0)
             {
                 SponsorId = UserId;
 
             }
             ViewBag.SponsorId = SponsorId;
-        var usersDrop=new SelectList(db.Users.Where(i => i.Id == UserId || i.SponsorId == SponsorId), "Id", "UserCode");
+            var usersDrop = new SelectList(db.Users.Where(i => i.Id == UserId || i.SponsorId == SponsorId), "Id", "UserCode");
             ViewBag.UserId = usersDrop;
             List<UserReport> userReports = new List<UserReport>();
             var sql = @"WITH UsersToRecursive AS
@@ -641,25 +640,24 @@ SELECT t.Id,t.SponsorId,c.UserCode as SponsorUserCode ,t.FullName,t.UserCode,t.P
             {
                 userReports = Users;
             }
-          
+
 
             return View(userReports);
         }
 
-        [AllowAnonymous]
-        public async Task<ActionResult> UserTree(long? UserId,long? LevelsSettingId)
+        public async Task<ActionResult> UserTree(long? UserId, long? LevelsSettingId)
         {
             //ViewBag.width = width;
             //ViewBag.height = height;
-            
+
             var Levels = db.LevelsSettings.ToList();
-           
+            ViewBag.userId = UserId;
             //ViewBag.LevelsSettingId = new SelectList(Levels, "Id", "LevelName");
             ViewBag.levels = Levels;
             ViewBag.UserId = UserId;
-            var Favorites=db.Favorites.Where(x=>x.UserId==UserId).Select(x=>x.SelectedUserId).ToList();
+            var Favorites = db.Favorites.Where(x => x.UserId == UserId).Select(x => x.SelectedUserId).ToList();
             string levelName = "";
-            if (LevelsSettingId>0)
+            if (LevelsSettingId > 0)
             {
                 levelName = Levels.Where(i => i.Id == LevelsSettingId).FirstOrDefault().LevelName;
             }
@@ -672,24 +670,32 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
 
             var datalist = db.Database.SqlQuery<Parent>(sql).ToList();
             var userData = db.Users.Where(i => i.Id == UserId).FirstOrDefault();
+            var GroupPoint = await GetGroupPoints(userData.Id);
+            //var personals = Convert.ToInt32(userData.title);
             Parent parent = new Parent()
             {
                 fname = userData.FullName,
                 lname = userData.UserCode,
-                title = "",
-                photo= "http://projectegy-001-site41.gtempurl.com/"+userData.ProfileImage,
+                title = GroupPoint.ToString(),
+                photo = "http://projectegy-001-site41.gtempurl.com/" + userData.ProfileImage,
                 Id = userData.Id,
-                
-                
+
+
             };
             foreach (var item in datalist)
             {
                 var GroupPoints = await GetGroupPoints(item.Id);
                 var personal = Convert.ToInt32(item.title);
-                var total = GroupPoints + personal;
+                var total =  personal;
+                item.ChildrenSum= (GroupPoints+personal).ToString();
                 item.title = total.ToString();
-                item.IsFavorite=Favorites.Contains(item.Id)?true:false;
-                //item.ChildrenSum = GetUserPointsHistory(item.Id).ToString();
+                item.IsFavorite = Favorites.Contains(item.Id) ? true : false;
+                
+                var x = GetUserPointsHistory(item.Id).Result.ToString();
+                foreach(var count in x)
+                {
+                    
+                }
                 if (string.IsNullOrEmpty(item.photo))
                 {
                     item.photo = "http://projectegy-001-site41.gtempurl.com/images/userimages/115.png";
@@ -707,21 +713,101 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
 
                 }
             }
-            if (!string.IsNullOrEmpty( levelName))
+
+
+            if (!string.IsNullOrEmpty(levelName))
             {
-             datalist=   datalist.Where(i => i.UserLevel == levelName).ToList();
+                datalist = datalist.Where(i => i.UserLevel == levelName).ToList();
             }
             parent.children = datalist.Where(i => i.SponsorId == parent.Id).ToList();
-           
             ViewBag.dd = parent;
+            search search1 = new search();
+            search1.UserId = (int)UserId;
             //ViewBag.Data = new JavaScriptSerializer().Serialize(parent);
 
-            return View();
+            return View(search1);
+        }
+        [HttpPost]
+        public async Task<ActionResult> UserTree(search search, string LevelsSettingId)
+        {
+            var Levels = db.LevelsSettings.ToList();
+
+            //ViewBag.LevelsSettingId = new SelectList(Levels, "Id", "LevelName");
+            ViewBag.levels = Levels;
+            //ViewBag.UserId = UserId;
+            var Favorites = db.Favorites.Where(x => x.UserId == search.UserId).Select(x => x.SelectedUserId).ToList();
+            string levelName = "";
+            if (LevelsSettingId.Count() > 0)
+            {
+                levelName = Levels.Where(i => i.Id.ToString() == LevelsSettingId).FirstOrDefault().LevelName;
+            }
+            string sql = @"WITH UsersToRecursive AS
+ (
+SELECT Id,ProfileImage,SponsorId,cast(0 as nvarchar(50)) as SponsorUserCode,FullName,UserCode,PhoneNumber FROM [User]  WHERE Id =" + search.UserId + " " +
+@" UNION ALL
+SELECT t.Id,t.ProfileImage,t.SponsorId,c.UserCode as SponsorUserCode ,t.FullName,t.UserCode,t.PhoneNumber FROM [User] t INNER JOIN UsersToRecursive c  ON t.SponsorId = c.Id )
+SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(TotalPoints),0) as nvarchar(50)) from[Order] where UserId =UsersToRecursive.Id  and (SELECT DATEPART(Year, CreationDate)) = (SELECT DATEPART(YEAR, (select GetutcDate()))) and  ( (SELECT DATEPART(month, CreationDate)) = (SELECT DATEPART(month, (select GetutcDate()))) or (SELECT DATEPART(month, CancelationDate)) = (SELECT DATEPART(month, (select GetutcDate())))  )) as title,ProfileImage as photo  FROM UsersToRecursive where Id !=" + search.UserId + "";
+
+            var datalist = db.Database.SqlQuery<Parent>(sql).Where(x => x.UserLevel == levelName).ToList();
+            var userData = db.Users.Where(i => i.Id == search.UserId).FirstOrDefault();
+
+            Parent parent = new Parent()
+            {
+                fname = userData.FullName,
+                lname = userData.UserCode,
+                title = "",
+                photo = "http://projectegy-001-site41.gtempurl.com/" + userData.ProfileImage,
+                Id = userData.Id,
+
+
+            };
+            foreach (var item in datalist)
+            {
+                var GroupPoints = await GetGroupPoints(item.Id);
+                var personal = Convert.ToInt32(item.title);
+                var total = GroupPoints + personal;
+                item.title = total.ToString();
+                item.IsFavorite = Favorites.Contains(item.Id) ? true : false;
+                item.ChildrenSum = GetUserPointsHistory(item.Id).ToString();
+                if (string.IsNullOrEmpty(item.photo))
+                {
+                    item.photo = "http://projectegy-001-site41.gtempurl.com/images/userimages/115.png";
+                }
+                else { item.photo = "http://projectegy-001-site41.gtempurl.com/" + item.photo; }
+                item.children = (List<Parent>)datalist.Where(i => i.SponsorId == item.Id).Select(x=>x.children);
+                item.UserLevel = "--";
+                foreach (var level in Levels)
+                {
+                    if (total >= level.LevelFrom && total <= level.LevelTo)
+                    {
+                        item.UserLevel = level.LevelName;
+                        break;
+                    }
+                    foreach (var child in parent.children)
+                    {
+                        ViewBag.dd = child;
+                    }
+                }
+            }
+
+
+            if (!string.IsNullOrEmpty(levelName))
+            {
+                datalist = datalist.Where(i => i.UserLevel == levelName).ToList();
+            }
+            parent.children = datalist.Where(i => i.SponsorId == parent.Id).ToList();
+
+
+
+            //ViewBag.Data = new JavaScriptSerializer().Serialize(parent);
+            ViewBag.dd = parent;
+            return View(search);
+
         }
         [AllowAnonymous]
-        public   bool Favorite(long UserId,long Selected)
+        public bool Favorite(long UserId, long Selected)
         {
-            if (UserId<=0 || Selected<=0)
+            if (UserId <= 0 || Selected <= 0)
             {
                 return false;
             }
@@ -729,7 +815,7 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
             {
                 var Fav = db.Favorites.Where(x => x.UserId == UserId && x.SelectedUserId == Selected).FirstOrDefault();
 
-                if (Fav !=null)
+                if (Fav != null)
                 {
                     db.Favorites.Remove(Fav);
                     db.SaveChanges();
@@ -748,13 +834,13 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
                     return true;
 
                 }
-               
+
             }
         }
-        public UserReport PrintNodesRecursive(List<UserReport>  userReports, UserReport parent)
+        public UserReport PrintNodesRecursive(List<UserReport> userReports, UserReport parent)
         {
             UserReport g = new UserReport();
-            var users=  userReports.Where(i => i.SponsorId == parent.Id).ToList();
+            var users = userReports.Where(i => i.SponsorId == parent.Id).ToList();
             parent.UserTrees = users;
             return parent;
         }
@@ -762,75 +848,75 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
         [AllowAnonymous]
         public async Task<ActionResult> NewTree(long? UserId)
         {
-//            var Levels = db.LevelsSettings.ToList();
-//            ViewBag.LevelsSettingId = new SelectList(Levels, "Id", "LevelName");
-//            ViewBag.UserId = UserId;
-           
-//            string sql = @"WITH UsersToRecursive AS
-// (
-//SELECT Id,ProfileImage,SponsorId,cast(0 as nvarchar(50)) as SponsorUserCode,FullName,UserCode,PhoneNumber FROM [User]  WHERE Id =" + UserId + " " +
-//@" UNION ALL
-//SELECT t.Id,t.ProfileImage,t.SponsorId,c.UserCode as SponsorUserCode ,t.FullName,t.UserCode,t.PhoneNumber FROM [User] t INNER JOIN UsersToRecursive c  ON t.SponsorId = c.Id )
-//SELECT Id as id,SponsorId as pid,FullName as name,UserCode as code,(select cast(IsNull(Sum(TotalPoints),0) as nvarchar(50)) from[Order] where UserId =UsersToRecursive.Id  and (SELECT DATEPART(Year, CreationDate)) = (SELECT DATEPART(YEAR, (select GetutcDate()))) and  ( (SELECT DATEPART(month, CreationDate)) = (SELECT DATEPART(month, (select GetutcDate()))) or (SELECT DATEPART(month, CancelationDate)) = (SELECT DATEPART(month, (select GetutcDate())))  )) as personalPoints,ProfileImage as img   FROM UsersToRecursive where Id !=" + UserId + "";
+            //            var Levels = db.LevelsSettings.ToList();
+            //            ViewBag.LevelsSettingId = new SelectList(Levels, "Id", "LevelName");
+            //            ViewBag.UserId = UserId;
 
-//            var datalist = db.Database.SqlQuery<TreeModel>(sql).ToList();
-//            var userData = db.Users.Where(i => i.Id == UserId).FirstOrDefault();
-//            List<string> tgs = new List<string>();
-//            tgs.Add("root");
-//            TreeModel parent = new TreeModel()
-//            {
-//                id = userData.Id,
-//                pid= userData.Id,
-//                personLevel="",
-//                love="empty",
-//                save=(int)userData.Id,
-//                groupPoints="0",
-//                personalPoints="0",
-//                tags=tgs ,
-//                name = userData.FullName,
-//                code = userData.UserCode,
-//                img = "http://projectegy-001-site41.gtempurl.com/" + userData.ProfileImage,
-//                link = "http://projectegy-001-site41.gtempurl.com/Users/Details/" + userData.Id,
-//            };
-//            foreach (var item in datalist)
-//            {
-//                item.save = (int)item.pid;
-//                item.tags = new List<string>();
-//                item.love = "fill";
-//                item.link = "http://projectegy-001-site41.gtempurl.com/Users/Details/" + item.id;
-//                var GroupPoints = await GetGroupPoints(item.id);
-//                var personal = Convert.ToInt32(item.personalPoints);
-//                var total = GroupPoints + personal;
-//                item.groupPoints = total.ToString();
-//                if (string.IsNullOrEmpty(item.img))
-//                {
-//                    item.img = "http://projectegy-001-site41.gtempurl.com/images/userimages/115.png";
-//                }
-//                else { item.img = "http://projectegy-001-site41.gtempurl.com/" + item.img; }
-//                item.personLevel = "--";
-//                foreach (var level in Levels)
-//                {
-//                    if (total >= level.LevelFrom && total <= level.LevelTo)
-//                    {
-//                        item.personLevel = "18";//level.LevelName;
-//                        break;
-//                    }
+            //            string sql = @"WITH UsersToRecursive AS
+            // (
+            //SELECT Id,ProfileImage,SponsorId,cast(0 as nvarchar(50)) as SponsorUserCode,FullName,UserCode,PhoneNumber FROM [User]  WHERE Id =" + UserId + " " +
+            //@" UNION ALL
+            //SELECT t.Id,t.ProfileImage,t.SponsorId,c.UserCode as SponsorUserCode ,t.FullName,t.UserCode,t.PhoneNumber FROM [User] t INNER JOIN UsersToRecursive c  ON t.SponsorId = c.Id )
+            //SELECT Id as id,SponsorId as pid,FullName as name,UserCode as code,(select cast(IsNull(Sum(TotalPoints),0) as nvarchar(50)) from[Order] where UserId =UsersToRecursive.Id  and (SELECT DATEPART(Year, CreationDate)) = (SELECT DATEPART(YEAR, (select GetutcDate()))) and  ( (SELECT DATEPART(month, CreationDate)) = (SELECT DATEPART(month, (select GetutcDate()))) or (SELECT DATEPART(month, CancelationDate)) = (SELECT DATEPART(month, (select GetutcDate())))  )) as personalPoints,ProfileImage as img   FROM UsersToRecursive where Id !=" + UserId + "";
 
-//                }
-//            }
-//            datalist = datalist.Where(i => i.id != userData.Id).ToList();
+            //            var datalist = db.Database.SqlQuery<TreeModel>(sql).ToList();
+            //            var userData = db.Users.Where(i => i.Id == UserId).FirstOrDefault();
+            //            List<string> tgs = new List<string>();
+            //            tgs.Add("root");
+            //            TreeModel parent = new TreeModel()
+            //            {
+            //                id = userData.Id,
+            //                pid= userData.Id,
+            //                personLevel="",
+            //                love="empty",
+            //                save=(int)userData.Id,
+            //                groupPoints="0",
+            //                personalPoints="0",
+            //                tags=tgs ,
+            //                name = userData.FullName,
+            //                code = userData.UserCode,
+            //                img = "http://projectegy-001-site41.gtempurl.com/" + userData.ProfileImage,
+            //                link = "http://projectegy-001-site41.gtempurl.com/Users/Details/" + userData.Id,
+            //            };
+            //            foreach (var item in datalist)
+            //            {
+            //                item.save = (int)item.pid;
+            //                item.tags = new List<string>();
+            //                item.love = "fill";
+            //                item.link = "http://projectegy-001-site41.gtempurl.com/Users/Details/" + item.id;
+            //                var GroupPoints = await GetGroupPoints(item.id);
+            //                var personal = Convert.ToInt32(item.personalPoints);
+            //                var total = GroupPoints + personal;
+            //                item.groupPoints = total.ToString();
+            //                if (string.IsNullOrEmpty(item.img))
+            //                {
+            //                    item.img = "http://projectegy-001-site41.gtempurl.com/images/userimages/115.png";
+            //                }
+            //                else { item.img = "http://projectegy-001-site41.gtempurl.com/" + item.img; }
+            //                item.personLevel = "--";
+            //                foreach (var level in Levels)
+            //                {
+            //                    if (total >= level.LevelFrom && total <= level.LevelTo)
+            //                    {
+            //                        item.personLevel = "18";//level.LevelName;
+            //                        break;
+            //                    }
 
-//            datalist.Add(parent);
-//            datalist = datalist.OrderBy(i => i.id).ToList();
+            //                }
+            //            }
+            //            datalist = datalist.Where(i => i.id != userData.Id).ToList();
 
-//            ViewBag.Data = new JavaScriptSerializer().Serialize(parent);
-//            JsonSerializer serializer = new JsonSerializer();
-//            var basePath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+            //            datalist.Add(parent);
+            //            datalist = datalist.OrderBy(i => i.id).ToList();
 
-//            //serialize object directly into file stream
-//            var file = basePath + "/treeNodes/test.json";
-//            string json = JsonConvert.SerializeObject(datalist);
-//            System.IO.File.WriteAllText(file, json);
+            //            ViewBag.Data = new JavaScriptSerializer().Serialize(parent);
+            //            JsonSerializer serializer = new JsonSerializer();
+            //            var basePath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+
+            //            //serialize object directly into file stream
+            //            var file = basePath + "/treeNodes/test.json";
+            //            string json = JsonConvert.SerializeObject(datalist);
+            //            System.IO.File.WriteAllText(file, json);
 
             return View();
         }
@@ -933,7 +1019,7 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
             parent.children = datalist.Where(i => i.SponsorId == parent.Id).ToList();
             //ViewBag.Data = new JavaScriptSerializer().Serialize(parent);
             parent.children.FirstOrDefault().children = parent.children;
-            ViewBag.Data =  parent;
+            ViewBag.Data = parent;
             ViewBag.result = result;
             ViewBag.temp = temp;
             return View();
@@ -966,14 +1052,14 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
                         
                 "
                 );
-            if (parent.children.Count>0)
+            if (parent.children.Count > 0)
             {
                 table.Append(@"<ul>");
 
             }
             foreach (var item in parent.children)
             {
-                 
+
                 table.Append(
                      @"<li>
                            <a href ='javascript:void(0);'>
@@ -985,12 +1071,12 @@ SELECT Id,SponsorId,FullName as fname,UserCode as lname,(select cast(IsNull(Sum(
                            <span class='labeel backcircleredheart'>
                            <i class='fas fa-heart  redheart'></i>
                            </span>
-                           <span class='percentage'>"+item.UserLevel+"</span> "+
+                           <span class='percentage'>" + item.UserLevel + "</span> " +
                          @" <div class='member-details'>
-                             <p class='name'>" + item.fname+"</p>"+
-                             @"<p class='code'>الكود "+item.lname+"</p>"+
-                             @"<p class='points'> النقط الشخصية "+item.title+"</p>"+
-                             @"<p class='team'>نقط المجموعة : "+item.title+"</p>"+
+                             <p class='name'>" + item.fname + "</p>" +
+                             @"<p class='code'>الكود " + item.lname + "</p>" +
+                             @"<p class='points'> النقط الشخصية " + item.title + "</p>" +
+                             @"<p class='team'>نقط المجموعة : " + item.title + "</p>" +
                          @"</div>
                      </div>
                  </div>

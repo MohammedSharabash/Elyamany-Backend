@@ -12,6 +12,7 @@ namespace ElYamanyDashboard.Models.Views
         public string title { get; set; }
         public string photo { get; set; }
         public List<Parent> children { get; set; }
+       
         public long Id { get;  set; }
         public long SponsorId { get;  set; }
         public string UserLevel { get;  set; }

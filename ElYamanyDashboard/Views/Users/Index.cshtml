@@ -93,6 +93,8 @@
             </thead>
             <tbody>
 
+
+
                 @foreach (var item in Model)
                 {
                     <tr>
@@ -100,7 +102,7 @@
                             المزيد
                         </td>
                         <td>
-                            <a href="http://projectegy-002-site35.gtempurl.com/?userId=@item.Id" target="_blank">الشجرة</a>
+                            <a href="@Url.Action("UserTree", "Users", new {userId=item.Id})" target="_blank">الشجرة</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.UserCode)
